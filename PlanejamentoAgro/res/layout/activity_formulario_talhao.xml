@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background" >
+
+    <EditText
+        android:id="@+id/etNomeTalhao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/nome_talhao">
+    </EditText>
+
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center" >
+
+	    <EditText
+	        android:id="@+id/etDataPlantio"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="0.78"
+	        android:ems="10"
+	        android:hint="@string/data_plantio"
+	        android:inputType="textPersonName" />
+
+	    <Button
+	        android:id="@+id/button1"
+	        style="?android:attr/buttonStyleSmall"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/ic_action_go_to_today"
+	        android:onClick="onClickCalendario"/>
+	</LinearLayout>
+
+    <EditText
+        android:id="@+id/etProdutoAplicado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/produto_aplicado"
+        android:inputType="textPersonName" />    
+	   <RadioGroup
+	       android:id="@+id/rgAplicacao"
+	       android:layout_width="match_parent"
+	       android:layout_height="60dp" >
+	    <RadioButton
+	        android:id="@+id/rbAplicacao22"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/aplicacao_em_22_dias" />
+		
+		<RadioButton
+	        android:id="@+id/rbAplicaoEm"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/aplicacao_em" />
+	</RadioGroup>
+	  	
+	
+	<EditText
+	    android:id="@+id/etDias"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:hint="@string/digite_os_dias"
+		android:inputType="number">
+	</EditText>
+</LinearLayout>

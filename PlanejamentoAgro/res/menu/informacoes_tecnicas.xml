@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="br.com.planejamentoagro.InformacoesTecnicas" >
+
+
+    <item 
+        android:id="@+id/action_addInformacoes"
+        android:icon="@drawable/ic_action_new"
+        android:showAsAction="ifRoom"
+        android:title="@string/add_informacoes"/> 
+
+</menu>

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    android:showDividers="beginning|middle|end" >
+
+    <EditText
+        android:id="@+id/etNomeTalhao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/nome_talhao">
+    </EditText>
+
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center" >
+
+	    <EditText
+	        android:id="@+id/etDataPlantio"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="0.78"
+	        android:ems="10"
+	        android:hint="@string/data_plantio"
+	        android:inputType="textPersonName" />
+
+	    <Button
+	        android:id="@+id/button0"
+	        style="?android:attr/buttonStyleSmall"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/ic_action_go_to_today"
+	        android:onClick="onClickCalendario"/>
+	</LinearLayout>
+
+    <EditText
+        android:id="@+id/etProdutoAplicado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/produto_aplicado"
+        android:inputType="textPersonName" />
+		<ScrollView
+	    android:id="@+id/scrollView1"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" >
+
+			<TableLayout   
+			    android:id="@+id/tableLayout1"
+		    	android:layout_width="fill_parent"
+		    	android:layout_height="wrap_content" >
+ 
+			    <TableRow
+			        android:id="@+id/tableRow0"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:divider="?android:attr/dividerHorizontal"
+			        android:showDividers="none" 
+			        android:dividerPadding="5dip">
+			 
+			        <TextView
+			            android:id="@+id/tvDataPrevista"
+			            android:layout_weight="1"
+			            android:layout_column="1"
+			            android:text="Data Prevista"
+			            android:textAppearance="?android:attr/textAppearanceMedium"
+			            android:background="@drawable/shape_tabela_datas"/>
+			        <TextView
+			            android:id="@+id/tvDataAplicacao"
+			            android:layout_weight="1"
+			            android:layout_column="2"	
+			            android:textAppearance="?android:attr/textAppearanceMedium"
+			            android:background="@drawable/shape_tabela_datas"	            
+			            android:text="Data Aplicação"/>
+			        <Button
+			            android:id="@+id/button"
+			            style="?android:attr/buttonStyleSmall"
+			            android:layout_column="3"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:visibility="invisible"/>
+			        
+			    </TableRow>
+
+			    <TableRow
+			        android:id="@+id/tableRow1"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:divider="?android:attr/dividerHorizontal"
+			        android:showDividers="middle" 
+			        android:dividerPadding="0dp">
+			 
+			        <TextView
+			            android:id="@+id/textView1"
+			            android:text="1ª"
+			            android:layout_column="0"
+			            android:textAppearance="?android:attr/textAppearanceMedium"
+			          	android:background="@drawable/shape_tabela_datas"	/>
+			        <TextView
+			            android:id="@+id/tvDataPrevista1"
+			            android:layout_column="1"
+			            style="@style/tvAplicacoes"/>
+			        <TextView
+			            android:id="@+id/tvDataAplicacao1"
+			            android:layout_column="2"
+			            style="@style/tvAplicacoes"/>
+	
+			        <Button
+			            android:id="@+id/btnAplicacao1"		            
+			            android:layout_column="3"
+			            style="?android:attr/buttonStyleSmall"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:background="@drawable/ic_action_go_to_today"
+			            android:onClick="onClickCalendario"/>
+			    </TableRow>
+			    <TableRow
+			        android:id="@+id/tableRow2"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:divider="?android:attr/dividerHorizontal"
+			        android:showDividers="middle" 
+			        android:dividerPadding="5dip">
+			 
+			        <TextView
+			            android:id="@+id/textView2"
+			            android:text="2ª"
+			            android:layout_column="0"
+			            android:textAppearance="?android:attr/textAppearanceMedium"
+			          	android:background="@drawable/shape_tabela_datas"	/>
+			        <TextView
+			            android:id="@+id/tvDataPrevista2"
+			            android:layout_column="1"
+			            style="@style/tvAplicacoes"/>
+			        <TextView
+			            android:id="@+id/tvDataAplicacao2"
+			            android:layout_column="2"
+			            style="@style/tvAplicacoes"/>
+	
+			        <Button
+			            android:id="@+id/btnAplicacao2"		            
+			            android:layout_column="3"
+			           	style="?android:attr/buttonStyleSmall"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:background="@drawable/ic_action_go_to_today"
+			            android:onClick="onClickCalendario"/>	
+			    </TableRow>
+			    <TableRow
+			        android:id="@+id/tableRow3"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:divider="?android:attr/dividerHorizontal"
+			        android:showDividers="middle" 
+			        android:dividerPadding="5dip">
+			 
+			        <TextView
+			            android:id="@+id/textView3"
+			            android:text="3ª"
+			            android:layout_column="0"
+			            android:textAppearance="?android:attr/textAppearanceMedium"
+			          	android:background="@drawable/shape_tabela_datas"	/>
+			        <TextView
+			            android:id="@+id/tvDataPrevista3"
+			            android:layout_column="1"
+			            style="@style/tvAplicacoes"/>
+			        <TextView
+			            android:id="@+id/tvDataAplicacao3"
+			            android:layout_column="2"
+			            style="@style/tvAplicacoes"/>
+	
+			        <Button
+			            android:id="@+id/btnAplicacao3"		            
+			            android:layout_column="3"
+			           	style="?android:attr/buttonStyleSmall"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:background="@drawable/ic_action_go_to_today"
+			            android:onClick="onClickCalendario"/>	
+			    </TableRow>
+			    <TableRow
+			        android:id="@+id/tableRow4"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:divider="?android:attr/dividerHorizontal"
+			        android:showDividers="middle" 
+			        android:dividerPadding="5dip">
+			 
+			        <TextView
+			            android:id="@+id/textView4"
+			            android:text="4ª"
+			            android:layout_column="0"
+			            android:textAppearance="?android:attr/textAppearanceMedium"
+			          	android:background="@drawable/shape_tabela_datas"	/>
+			        <TextView
+			            android:id="@+id/tvDataPrevista4"
+			            android:layout_column="1"
+			            style="@style/tvAplicacoes"/>
+			        <TextView
+			            android:id="@+id/tvDataAplicacao4"
+			            android:layout_column="2"
+			            style="@style/tvAplicacoes"/>
+	
+			        <Button
+			            android:id="@+id/btnAplicacao4"		            
+			            android:layout_column="3"
+			           	style="?android:attr/buttonStyleSmall"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:background="@drawable/ic_action_go_to_today"
+			            android:onClick="onClickCalendario"/>	
+			    </TableRow>
+			    <TableRow
+			        android:id="@+id/tableRow5"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:divider="?android:attr/dividerHorizontal"
+			        android:showDividers="middle" 
+			        android:dividerPadding="5dip">
+			 
+			        <TextView
+			            android:id="@+id/textView5"
+			            android:text="5ª"
+			            android:layout_column="0"
+			            android:textAppearance="?android:attr/textAppearanceMedium"
+			          	android:background="@drawable/shape_tabela_datas"	/>
+			        <TextView
+			            android:id="@+id/tvDataPrevista5"
+			            android:layout_column="1"
+			            style="@style/tvAplicacoes"/>
+			        <TextView
+			            android:id="@+id/tvDataAplicacao5"
+			            android:layout_column="2"
+			            style="@style/tvAplicacoes"/>
+	
+			        <Button
+			            android:id="@+id/btnAplicacao5"		            
+			            android:layout_column="3"
+			           	style="?android:attr/buttonStyleSmall"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:background="@drawable/ic_action_go_to_today"
+			            android:onClick="onClickCalendario"/>	
+			    </TableRow>
+			    <TableRow
+			        android:id="@+id/tableRow6"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:divider="?android:attr/dividerHorizontal"
+			        android:showDividers="middle" 
+			        android:dividerPadding="5dip">
+			 
+			        <TextView
+			            android:id="@+id/textView6"
+			            android:text="6ª"
+			            android:layout_column="0"
+			            android:textAppearance="?android:attr/textAppearanceMedium"
+			          	android:background="@drawable/shape_tabela_datas"	/>
+			        <TextView
+			            android:id="@+id/tvDataPrevista6"
+			            android:layout_column="1"
+			            style="@style/tvAplicacoes"/>
+			        <TextView
+			            android:id="@+id/tvDataAplicacao6"
+			            android:layout_column="2"
+			            style="@style/tvAplicacoes"/>
+	
+			        <Button
+			            android:id="@+id/btnAplicacao6"		            
+			            android:layout_column="3"
+			           	style="?android:attr/buttonStyleSmall"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:background="@drawable/ic_action_go_to_today"
+			            android:onClick="onClickCalendario"/>	
+			    </TableRow>
+			     
+			</TableLayout>
+	            
+		</ScrollView>
+    
+</LinearLayout>

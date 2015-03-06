@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">PAgro</string>
+    <string name="adicionar_cliente">Clique no ícone abaixo para adicionar novo cliente.</string>
+    <string name="adicionar_talhao">Clique no ícone abaixo para adicionar novo talhão.</string>
+    <string name="adicionar_informacoes">Clique no ícone abaixo para adicionar informações de visita.</string>
+    <string name="descricao_imagem">Imagem.</string>
+    <string name="vizualizar_imagens">Vizualizar Imagens</string>
+    <string name="foto_talhoes">Foto Talhões</string>
+    <string name="tirar_fotos">Tirar Fotos</string>
+    <string name="informacoes_tecnicas">Informações Técnicas</string>
+    <string name="pesquisar">Pesquisar</string>
+    <string name="title_activity_editar_talhao">Editar Talhão</string>
+    <string name="title_activity_cadastra_talhao">Cadastrar Talhão</string>
+    <string name="title_activity_cadastrar_cliente">Casdastrar Cliente</string>
+    <string name="title_activity_editar_cliente">Editar Cliente</string>
+    <string name="title_activity_lista_cliente">Planejamento Agro</string>
+    <string name="title_activity_lista_talhao">Talhões</string>
+    <string name="action_settings">Configurações</string>
+    <string name="novo_cliente">Novo Cliente</string>
+    <string name="novo_talhao">Novo Talhão</string>
+    <string name="add_informacoes">Adiciona Infomações</string>
+    <string name="nome_cliente">Nome Cliente</string>
+    <string name="nome_fazenda">Nome Fazenda</string>
+    <string name="municipio">Município</string>
+    <string name="telefone">Telefone</string>
+    <string name="salvar">Salvar</string>
+    <string name="deletar">Deletar</string>
+    <string name="ligar">Ligar</string>
+    <string name="editar">Editar</string>
+    <string name="sobre">Sobre</string>
+    <string name="nome_talhao">Nome Talhao</string>
+    <string name="data_plantio">Data Plantio</string>
+    <string name="data_visita">Data Visita</string>
+    <string name="produto_aplicado">Produto Aplicar</string>
+    <string name="proxima_aplicacao">Próxima Aplicação</string>
+    <string name="title_activity_teste">Teste</string>
+    <string name="aplicacao_em">1ª Aplicação em:</string>
+    <string name="aplicacao_em_22_dias">1ª Aplicação em 22 dias.</string>
+    <string name="dias">dias.</string>
+    <string name="digite_os_dias">Digite os dias.</string>
+    <string name="informacao_aplicacoes">Informação Aplicações</string>
+    <string name="vazio">VAZIO!</string>
+    <string name="title_activity_informacoes_tecnicas">Informacões Técnicas</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_galeria_imagens">GaleriaImagens</string>
+    <string name="title_activity_cadastra_informacoes">Cadastra Informacoes</string>
+    <string name="title_activity_talhaoes_com_aplicacao">Talhões Com Aplicacao</string>
+    <string name="title_activity_lista_talhao_com_aplicacao">ListaTalhaoComAplicacao</string>
+
+</resources>
