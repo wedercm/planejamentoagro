@@ -21,7 +21,6 @@ public class FormularioClienteHelper {
 	{
 		cliente = new Cliente(this.edNome.getText().toString(), this.edNomeFazenda.getText().toString(), this.edMunicipio.getText().toString());
 		return this.cliente;
-		
 	}
 	public void setCliente(Cliente cliente)
 	{
@@ -30,5 +29,4 @@ public class FormularioClienteHelper {
 		this.edMunicipio.setText(cliente.getMunicipio());
 		this.cliente = cliente;
 	}
-
 }

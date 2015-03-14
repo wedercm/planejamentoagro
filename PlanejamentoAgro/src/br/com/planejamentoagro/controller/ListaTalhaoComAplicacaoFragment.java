@@ -6,12 +6,15 @@ import java.util.List;
 import br.com.planejamentoagro.R;
 import br.com.planejamentoagro.adpter.AdapterTalhaoComAplicacaoListView;
 import br.com.planejamentoagro.helper.DiretoriosHelper;
+import br.com.planejamentoagro.helper.GeraInformacoesEntidades;
 import br.com.planejamentoagro.model.Talhao;
 import br.com.planejamentoagro.model.dao.TalhaoDAO;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,6 +28,7 @@ import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class ListaTalhaoComAplicacaoFragment extends Fragment{
@@ -35,6 +39,7 @@ public class ListaTalhaoComAplicacaoFragment extends Fragment{
 	private String nomeCliente;
 	private TalhaoDAO talhaoDAO;
 	private TextView tvAddTalhao;
+	private ProgressBar progressBar;
 	public ListaTalhaoComAplicacaoFragment() {}
 	public static ListaTalhaoComAplicacaoFragment newInstance()
 	{
@@ -43,12 +48,13 @@ public class ListaTalhaoComAplicacaoFragment extends Fragment{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 	}
 	@Override
 	public void onResume() {
 		super.onResume();
 		AtualizaListaAsyncTask task = new AtualizaListaAsyncTask();
-		task.execute();
+		task.execute();	
 	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,7 +62,7 @@ public class ListaTalhaoComAplicacaoFragment extends Fragment{
 		View rootView = inflater.inflate(R.layout.fragment_lista_talhao, container,false);
 		lvListaTalhao = (ListView) rootView.findViewById(R.id.listViewListaTalhao);
 		tvAddTalhao = (TextView) rootView.findViewById(R.id.tvAddTalhao);
-//		registerForContextMenu(lvListaTalhao);
+		progressBar = (ProgressBar) rootView.findViewById(R.id.progressBarListaTalhaoAplicacao);
 		this.nomeCliente = getActivity().getIntent().getStringExtra("NOME_CLIENTE");
 		ClickCurto(lvListaTalhao);
 		ClickLongo(lvListaTalhao);
@@ -65,13 +71,28 @@ public class ListaTalhaoComAplicacaoFragment extends Fragment{
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.lista_talhao, menu);
+		inflater.inflate(R.menu.lista_talhao_com_aplicacao, menu);
 	}
-
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		if(isVisibleToUser){
+			SharedPreferences prefs = getActivity().getSharedPreferences(ListaClientesFragment.DELETOU_CLIENTE,Context.MODE_PRIVATE);
+			boolean deletouCliente = prefs.getBoolean(ListaClientesFragment.DELETOU_CLIENTE, false);
+			if(deletouCliente){
+				prefs.edit().putBoolean(ListaClientesFragment.DELETOU_CLIENTE, false).commit();
+				AtualizaListaAsyncTask task = new AtualizaListaAsyncTask();
+				task.execute();	
+			}		
+		}
+	};
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
+			GeraInformacoesEntidades.
+			geraAlertaDialog(getActivity(),"Desenvolvido por: Weder Mendes\nemail: wederc@gmail.com", 
+					"Informações Desenvolvedor","OK");
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -171,9 +192,14 @@ public class ListaTalhaoComAplicacaoFragment extends Fragment{
 	}
 	class AtualizaListaAsyncTask extends AsyncTask<Void, Void, List<Talhao>>
 	{
+		@Override
+		protected void onProgressUpdate(Void... values){
+			progressBar.setVisibility(View.VISIBLE);
+		}
 
 		@Override
-		protected List<Talhao> doInBackground(Void... params) {
+		protected List<Talhao> doInBackground(Void... params){
+			publishProgress();
 			talhaoDAO = new TalhaoDAO(getActivity());
 	        arrayTalhao = talhaoDAO.listarTalhoesComAplicacao(15);
 	        talhaoDAO.fecharConexao();
@@ -181,6 +207,7 @@ public class ListaTalhaoComAplicacaoFragment extends Fragment{
 		}
 		@Override
 		protected void onPostExecute(List<Talhao> result) {
+			progressBar.setVisibility(View.INVISIBLE);
 			if(result.size() > 0){
 	        	tvAddTalhao.setVisibility(View.INVISIBLE);
 				if(talhaoAdapter == null){
@@ -193,7 +220,10 @@ public class ListaTalhaoComAplicacaoFragment extends Fragment{
 				}
 			}else
 			{
-				tvAddTalhao.setText("Não existem talhões com aplicação.");
+				
+				if(talhaoAdapter != null){
+					talhaoAdapter.clear();
+				}
 				tvAddTalhao.setVisibility(View.VISIBLE);
 			}
 		}		

@@ -3,9 +3,10 @@
     <string name="cor">#8B6914</string>
 
     <string name="app_name">PAgro</string>
-    <string name="adicionar_cliente">Clique no ícone abaixo para adicionar novo cliente.</string>
-    <string name="adicionar_talhao">Clique no ícone abaixo para adicionar novo talhão.</string>
-    <string name="adicionar_informacoes">Clique no ícone abaixo para adicionar informações de visita.</string>
+    <string name="adicionar_cliente">Para adicionar um novo cliente, toque no ícone "Adicionar Cliente" na parte superior da tela.</string>
+    <string name="adicionar_talhao">Para adicionar um novo talhão, toque no ícone "Adicionar" na parte superior da tela.</string>
+    <string name="adicionar_informacoes">Para adicionar informações, toque no ícone "Adicionar" na parte superior da tela.</string>
+    <string name="noa_existe_talhao_com_aplicacao">Não existe talhão com aplicação para os próximos 15 dias.</string>
     <string name="descricao_imagem">Imagem.</string>
     <string name="vizualizar_imagens">Vizualizar Imagens</string>
     <string name="foto_talhoes">Foto Talhões</string>

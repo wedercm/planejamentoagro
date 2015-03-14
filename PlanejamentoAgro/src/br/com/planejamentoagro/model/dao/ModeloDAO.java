@@ -3,7 +3,6 @@ package br.com.planejamentoagro.model.dao;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -38,25 +37,29 @@ public abstract class ModeloDAO <T extends EntidadePersistivel> {
 	}
 	public void deletar(T entidade)
 	{
-		String[] args = {String.valueOf(entidade.getId())};
-		dataBase.delete(getNomeTabela(), getNomeColunaPrimaryKey()+ " = ?", args);		
+		String[] whereArgs = {String.valueOf(entidade.getId())};
+		String whereClause = new StringBuilder().append(getNomeColunaPrimaryKey()).append(" = ?").toString();
+		dataBase.delete(getNomeTabela(), whereClause, whereArgs);		
 	}
 	public void deletarTodos()
 	{
-		dataBase.execSQL("DELETE FROM"+ getNomeTabela());
+		String sql = new StringBuilder().append("DELETE FROM ").append(getNomeTabela()).toString();
+		dataBase.execSQL(sql);
 	}
 	public void editar(T entidade)
 	{
 		ContentValues values = geraContentValeusEntidade(entidade);
-		String[] args = {String.valueOf(entidade.getId())};
-		dataBase.update(getNomeTabela(), values, getNomeColunaPrimaryKey()+" = ?", args);
+		String[] whereArgs = {String.valueOf(entidade.getId())};
+		String whereClause = new StringBuilder().append(getNomeColunaPrimaryKey()).append(" = ?").toString();
+		dataBase.update(getNomeTabela(), values, whereClause , whereArgs);
 	}
 	public List<T> listarTodos(String ordenar)
 	{
 		String sql;
+		StringBuilder strBuilder = new StringBuilder().append("SELECT * FROM ").append(getNomeTabela());
 		if (ordenar != null)
-			sql = "SELECT * FROM "+getNomeTabela()+" ORDER BY "+ordenar;
-		else sql = "SELECT * FROM "+getNomeTabela();
+			strBuilder.append(" ORDER BY ").append(ordenar).toString();
+		sql = strBuilder.toString();
 		return recuperaPorSQL(sql);
 	}
 	public List<T> listarTalhoesComAplicacao(int dias)
@@ -66,30 +69,44 @@ public abstract class ModeloDAO <T extends EntidadePersistivel> {
 	public List<T> listarPorID(int id, String ordenar)
 	{
 		String sql;
+		StringBuilder strBuilder = new StringBuilder().append("SELECT * FROM ").append(getNomeTabela())
+				.append(" WHERE ").append(getNomeColunaPrimaryKey()).append(" = ").append(id);
+		
 		if (ordenar != null)
-		sql = "SELECT * FROM "+getNomeTabela()+" where "+getNomeColunaPrimaryKey()+" = "+id+ " ORDER BY "+ordenar;
-		else sql = "SELECT * FROM "+getNomeTabela()+" where "+getNomeColunaPrimaryKey()+" = "+id;
-
+			strBuilder = strBuilder.append(" ORDER BY ").append(ordenar);
+		
+		sql = strBuilder.toString();
 		return recuperaPorSQL(sql);
 		
 	}
 	public List<T> listaPorFK(int fk,String ordenar)
 	{
 		String sql;
+		StringBuilder strBuilder = new StringBuilder().append("SELECT * FROM ").append(getNomeTabela())
+				.append(" WHERE ").append(getNomeColunaForenKey()).append(" = ").append(fk);
 		if (ordenar != null)
-			sql = "SELECT * FROM "+getNomeTabela()+" where "+getNomeColunaForenKey()+" = "+fk+" ORDER BY "+ordenar;
-		else sql = "SELECT * FROM "+getNomeTabela()+" where "+getNomeColunaForenKey()+" = "+fk;
+			strBuilder = strBuilder.append(" ORDER BY ").append(ordenar);
 
+		sql = strBuilder.toString();
 		return recuperaPorSQL(sql);
 	}
 	public boolean verificarData(String data)
 	{
-		String sql =  "SELECT * FROM "+getNomeTabela()+" WHERE "+TalhaoDAO.COLUNA_DATA_APLICACAO_1+ "= '"+data+"'"
-				+ " OR "+TalhaoDAO.COLUNA_DATA_APLICACAO_2+ "= '"+data+"'"		
-				+ " OR "+TalhaoDAO.COLUNA_DATA_APLICACAO_3+ "= '"+data+"'"
-				+ " OR "+TalhaoDAO.COLUNA_DATA_APLICACAO_4+ "= '"+data+"'"
-				+ " OR "+TalhaoDAO.COLUNA_DATA_APLICACAO_5+ "= '"+data+"'"
-				+ " OR "+TalhaoDAO.COLUNA_DATA_APLICACAO_6+ "= '"+data+"'";
+		String sql = new StringBuilder().append("SELECT * FROM ").append(getNomeTabela()).append(" WHERE ")
+				.append(TalhaoDAO.COLUNA_DATA_APLICACAO_1).append("= '").append(data).append("'")
+				.append(" OR ").append(TalhaoDAO.COLUNA_DATA_APLICACAO_2).append("= '").append(data).append("'")
+				.append(" OR ").append(TalhaoDAO.COLUNA_DATA_APLICACAO_3).append("= '").append(data).append("'")
+				.append(" OR ").append(TalhaoDAO.COLUNA_DATA_APLICACAO_4).append("= '").append(data).append("'")
+				.append(" OR ").append(TalhaoDAO.COLUNA_DATA_APLICACAO_5).append("= '").append(data).append("'")
+				.append(" OR ").append(TalhaoDAO.COLUNA_DATA_APLICACAO_6).append("= '").append(data).append("'")
+				.toString();
+		
+//		String sql =  "SELECT * FROM "+getNomeTabela()+" WHERE "+TalhaoDAO.COLUNA_DATA_APLICACAO_1+ "= '"+data+"'"
+//				+ " OR "+TalhaoDAO.COLUNA_DATA_APLICACAO_2+ "= '"+data+"'"		
+//				+ " OR "+TalhaoDAO.COLUNA_DATA_APLICACAO_3+ "= '"+data+"'"
+//				+ " OR "+TalhaoDAO.COLUNA_DATA_APLICACAO_4+ "= '"+data+"'"
+//				+ " OR "+TalhaoDAO.COLUNA_DATA_APLICACAO_5+ "= '"+data+"'"
+//				+ " OR "+TalhaoDAO.COLUNA_DATA_APLICACAO_6+ "= '"+data+"'";
 		Cursor cursor = dataBase.rawQuery(sql, null);		
 		return (cursor.getCount() > 0);		
 	}

@@ -2,7 +2,6 @@ package br.com.planejamentoagro.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
 import br.com.planejamentoagro.inteface.EntidadePersistivel;
 
 public class Cliente implements Serializable, EntidadePersistivel{
@@ -17,9 +16,6 @@ public class Cliente implements Serializable, EntidadePersistivel{
 	private ArrayList<Talhao> arrayTalhao = new ArrayList<Talhao>(); 
 	public Cliente()
 	{
-//		this.nome = "";
-//		this.nomeFazenda = "";
-//		this.municipio = "";
 	}
 	public Cliente(String nome, String nomeFazenda, String municipio){
 		this.nome = nome;
@@ -65,9 +61,10 @@ public class Cliente implements Serializable, EntidadePersistivel{
 	}
 	public String getInformacoes()
 	{
-		return 	"\nNome: " + this.nome+
-				"\nFazenda: " + this.nomeFazenda+
-				"\nMunicípio: "+this.municipio;
+		String informacoes = new StringBuilder().append("\nNome: ").append(this.nome)
+				.append("\nFazenda: ").append(this.nomeFazenda)
+				.append("\nMunicípio: ").append(this.municipio).toString();
+		return 	informacoes;
 	}
 	
 	@Override

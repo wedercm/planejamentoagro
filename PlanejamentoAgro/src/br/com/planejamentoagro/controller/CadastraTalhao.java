@@ -9,8 +9,6 @@ import br.com.planejamentoagro.model.dao.TalhaoDAO;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.text.GetChars;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +17,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class CadastraTalhao extends Activity {
-	private static final String LOG_TAG = CadastraTalhao.class.getSimpleName();
 	private FormularioTalhaoHelper talhaoHelper;
 	private Talhao talhao = new Talhao();
 	private EditText dataPlantio;
@@ -34,7 +31,6 @@ public class CadastraTalhao extends Activity {
 		dataPlantio = (EditText) findViewById(R.id.etDataPlantio);
 		this.idCliente = getIntent().getIntExtra("ID_CLIENTE",-1);
 		this.nomeCliente = getIntent().getStringExtra("NOME_CLIENTE");
-		Log.i(LOG_TAG,nomeCliente);
 	}	
 
 	public void salvar()

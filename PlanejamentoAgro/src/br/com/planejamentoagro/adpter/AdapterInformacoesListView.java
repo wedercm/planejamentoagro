@@ -1,7 +1,7 @@
 package br.com.planejamentoagro.adpter;
 
+import java.util.Collection;
 import java.util.List;
-
 import br.com.planejamentoagro.model.Informacoes;
 import br.com.planejamentoagro.R;
 import android.content.Context;
@@ -14,25 +14,23 @@ import android.widget.TextView;
 public class AdapterInformacoesListView extends BaseAdapter{
 	private LayoutInflater mInflater;
     private List<Informacoes> itens;
-	public AdapterInformacoesListView(Context contex, List<Informacoes> itens) {
-		this.itens = itens;
+	public AdapterInformacoesListView(Context contex, List<Informacoes> result) {
+		this.itens = result;
 		mInflater = LayoutInflater.from(contex);
 	}
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return itens.size();
 	}
 
 	@Override
 	public Informacoes getItem(int position) {
-		// TODO Auto-generated method stub
 		return itens.get(position);
 	}
 
 	@Override
-	public long getItemId(int position) {
-		
+	public long getItemId(int position) 
+	{		
 		return itens.get(position).getId();
 	}
 
@@ -43,8 +41,7 @@ public class AdapterInformacoesListView extends BaseAdapter{
 		if(view == null)
 		{
 			view = mInflater.inflate(R.layout.item_listview_informacoes, parent,false);
-			vHolder = new ViewHolder();
-			
+			vHolder = new ViewHolder();			
 			vHolder.informacoes = (TextView) view.findViewById(R.id.tvInformacoes);
 			vHolder.dataVisita = (TextView) view.findViewById(R.id.tvDataVisita);			
 			view.setTag(vHolder);			
@@ -62,5 +59,18 @@ public class AdapterInformacoesListView extends BaseAdapter{
 	static class ViewHolder{
 		TextView informacoes;
 		TextView dataVisita;
+	}
+	public void addAll(Collection<? extends Informacoes> collection){
+        itens.addAll(collection);        
+        notifyDataSetChanged();
+    }
+	public void remove(Informacoes informacoes)
+	{
+		itens.remove(informacoes);
+		notifyDataSetChanged();
+	}
+	 public void clear() {
+	     itens.clear();
+	     notifyDataSetChanged();
 	}
 }

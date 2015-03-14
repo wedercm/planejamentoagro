@@ -10,10 +10,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbHelper extends SQLiteOpenHelper {
 	private static final String DATABASE = "planejamentoagro.db";
-	private static final int VERSAO = 2;
+	private static final int VERSAO = 1;
 	private static DbHelper instance;
 
-	public DbHelper(Context context) {
+	public DbHelper(Context context){
 		super(context, DATABASE, null, VERSAO);
 	}
 	public static DbHelper getInstance(Context context){
@@ -28,9 +28,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		db.execSQL(ClienteDAO.SQL_CRIA_TABELA_CLIENTE);
 		db.execSQL(TalhaoDAO.SQL_CRIA_TABELA_TALHAO);
 		db.execSQL(InformacoesTecnicasDAO.SQL_CRIA_TABELA_INFORMACOES);
-
 	}
-
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL(ClienteDAO.SQL_DELETA_TABELA_CLIENTE);
@@ -45,6 +43,4 @@ public class DbHelper extends SQLiteOpenHelper {
 	        db.execSQL("PRAGMA foreign_keys=ON;");
 	    }
 	}
-	
-
 }

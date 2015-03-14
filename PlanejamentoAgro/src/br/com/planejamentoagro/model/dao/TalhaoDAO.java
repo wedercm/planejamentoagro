@@ -30,26 +30,47 @@ public class TalhaoDAO extends ModeloDAO<Talhao>{
 	public static final String COLUNA_DATA_APLICACAO_5 = "dataAplicacao5";
 	public static final String COLUNA_DATA_APLICACAO_6 = "dataAplicacao6";
 	public static final String NOME_TABELA = "Talhao";
+	public static final String SQL_CRIA_TABELA_TALHAO = new StringBuilder("CREATE TABLE ").append(NOME_TABELA).append("(")
+			.append(COLUNA_ID).append(" INTEGER PRIMARY KEY autoincrement, ")
+			.append(COLUNA_ID_CLIENTE).append(" INTEGER NOT NULL,")
+			.append(COLUNA_NOME).append(" TEXT NOT NULL, ").append(COLUNA_PRODUTO_APLICADO).append(" TEXT, ")
+			.append(COLUNA_DATA_PLANTIO).append(" TEXT NOT NULL,")
+			.append(COLUNA_NOME_CLIENTE).append(" TEXT NOT NULL,")			
+			.append(COLUNA_DIA_INICIA_APLICACAO).append(" INTEGER,")
+			.append(COLUNA_DATA_1).append(" TEXT NOT NULL,")
+			.append(COLUNA_DATA_2).append(" TEXT NOT NULL,")
+			.append(COLUNA_DATA_3).append(" TEXT NOT NULL,")
+			.append(COLUNA_DATA_4).append(" TEXT NOT NULL,")
+			.append(COLUNA_DATA_5).append(" TEXT NOT NULL,")
+			.append(COLUNA_DATA_6).append(" TEXT NOT NULL,")
+			.append(COLUNA_DATA_APLICACAO_1).append(" TEXT NOT NULL,")
+			.append(COLUNA_DATA_APLICACAO_2).append(" TEXT NOT NULL,")
+			.append(COLUNA_DATA_APLICACAO_3).append(" TEXT NOT NULL,")
+			.append(COLUNA_DATA_APLICACAO_4).append(" TEXT NOT NULL,")
+			.append(COLUNA_DATA_APLICACAO_5).append(" TEXT NOT NULL,")
+			.append(COLUNA_DATA_APLICACAO_6).append(" TEXT NOT NULL,")
+			.append("FOREIGN KEY (").append(COLUNA_ID_CLIENTE).append(") references ").append(ClienteDAO.NOME_TABELA).append("(").append(ClienteDAO.COLUNA_ID).append(") ON DELETE CASCADE)").toString();
 	
-	public static final String SQL_CRIA_TABELA_TALHAO = "CREATE TABLE "+ NOME_TABELA + "("
-			+ COLUNA_ID +" INTEGER PRIMARY KEY autoincrement, "
-			+ COLUNA_ID_CLIENTE +" INTEGER NOT NULL,"
-			+ COLUNA_NOME +" TEXT NOT NULL, "+COLUNA_PRODUTO_APLICADO+" TEXT, "+COLUNA_DATA_PLANTIO+" TEXT NOT NULL,"
-			+ COLUNA_NOME_CLIENTE +" TEXT NOT NULL,"			
-			+ COLUNA_DIA_INICIA_APLICACAO+" INTEGER,"
-			+ COLUNA_DATA_1 +" TEXT NOT NULL,"
-			+ COLUNA_DATA_2 +" TEXT NOT NULL,"
-			+ COLUNA_DATA_3 +" TEXT NOT NULL,"
-			+ COLUNA_DATA_4 +" TEXT NOT NULL,"
-			+ COLUNA_DATA_5 +" TEXT NOT NULL,"
-			+ COLUNA_DATA_6 +" TEXT NOT NULL,"
-			+ COLUNA_DATA_APLICACAO_1 +" TEXT NOT NULL,"
-			+ COLUNA_DATA_APLICACAO_2 +" TEXT NOT NULL,"
-			+ COLUNA_DATA_APLICACAO_3 +" TEXT NOT NULL,"
-			+ COLUNA_DATA_APLICACAO_4 +" TEXT NOT NULL,"
-			+ COLUNA_DATA_APLICACAO_5 +" TEXT NOT NULL,"
-			+ COLUNA_DATA_APLICACAO_6 +" TEXT NOT NULL,"
-			+ "FOREIGN KEY ("+COLUNA_ID_CLIENTE+") references "+ClienteDAO.NOME_TABELA+"("+ClienteDAO.COLUNA_ID+") ON DELETE CASCADE)";
+	
+//	public static final String SQL_CRIA_TABELA_TALHAO = "CREATE TABLE "+ NOME_TABELA + "("
+//			+ COLUNA_ID +" INTEGER PRIMARY KEY autoincrement, "
+//			+ COLUNA_ID_CLIENTE +" INTEGER NOT NULL,"
+//			+ COLUNA_NOME +" TEXT NOT NULL, "+COLUNA_PRODUTO_APLICADO+" TEXT, "+COLUNA_DATA_PLANTIO+" TEXT NOT NULL,"
+//			+ COLUNA_NOME_CLIENTE +" TEXT NOT NULL,"			
+//			+ COLUNA_DIA_INICIA_APLICACAO+" INTEGER,"
+//			+ COLUNA_DATA_1 +" TEXT NOT NULL,"
+//			+ COLUNA_DATA_2 +" TEXT NOT NULL,"
+//			+ COLUNA_DATA_3 +" TEXT NOT NULL,"
+//			+ COLUNA_DATA_4 +" TEXT NOT NULL,"
+//			+ COLUNA_DATA_5 +" TEXT NOT NULL,"
+//			+ COLUNA_DATA_6 +" TEXT NOT NULL,"
+//			+ COLUNA_DATA_APLICACAO_1 +" TEXT NOT NULL,"
+//			+ COLUNA_DATA_APLICACAO_2 +" TEXT NOT NULL,"
+//			+ COLUNA_DATA_APLICACAO_3 +" TEXT NOT NULL,"
+//			+ COLUNA_DATA_APLICACAO_4 +" TEXT NOT NULL,"
+//			+ COLUNA_DATA_APLICACAO_5 +" TEXT NOT NULL,"
+//			+ COLUNA_DATA_APLICACAO_6 +" TEXT NOT NULL,"
+//			+ "FOREIGN KEY ("+COLUNA_ID_CLIENTE+") references "+ClienteDAO.NOME_TABELA+"("+ClienteDAO.COLUNA_ID+") ON DELETE CASCADE)";
 	
 	public static final String SQL_DELETA_TABELA_TALHAO = "DROP TABLE IF EXISTS " + NOME_TABELA;
 
@@ -71,7 +92,7 @@ public class TalhaoDAO extends ModeloDAO<Talhao>{
 		values.put(COLUNA_NOME, talhao.getNome());
 		values.put(COLUNA_NOME_CLIENTE, talhao.getNomeCliente());
 		values.put(COLUNA_ID_CLIENTE, talhao.getIdCliente());
-		String dataPlantio = talhao.getDataPlantio().get(Calendar.DAY_OF_MONTH)+"/"+talhao.getDataPlantio().get(Calendar.MONTH)+"/"+talhao.getDataPlantio().get(Calendar.YEAR);
+		String dataPlantio = FormatacaoDeDatas.calendar2string(talhao.getDataPlantio());
 		values.put(COLUNA_DATA_PLANTIO, dataPlantio);
 		values.put(COLUNA_DIA_INICIA_APLICACAO, talhao.getDiasIniciaAplicacao());
 		values.put(COLUNA_PRODUTO_APLICADO, talhao.getProdutoAplicado());
@@ -119,5 +140,4 @@ public class TalhaoDAO extends ModeloDAO<Talhao>{
 	public String getNomeColunaForenKey() {
 		return COLUNA_ID_CLIENTE;
 	}
-	
 }

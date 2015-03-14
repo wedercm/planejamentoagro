@@ -27,6 +27,4 @@ public class BackgroundReceiverBoot extends BroadcastReceiver {
 			alarme.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), 86400000, pIntent);
 		} 
 	}
-	
-	
 }

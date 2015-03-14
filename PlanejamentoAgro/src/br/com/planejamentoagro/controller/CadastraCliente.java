@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 public class CadastraCliente extends Activity implements InterfaceAtividades{
 	private FormularioClienteHelper helperCliente;
+	
 	private ClienteDAO clienteDAO;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

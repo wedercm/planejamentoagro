@@ -6,7 +6,6 @@ import br.com.planejamentoagro.R;
 import br.com.planejamentoagro.model.Talhao;
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -54,8 +53,7 @@ public class FormularioTalhaoHelper {
 		if(dataPlantio.equals("")){
 			calendario = null;	
 		}else{
-			calendario = string2calendar(dataPlantio);			
-			
+			calendario = FormatacaoDeDatas.string2calendar(FormatacaoDeDatas.subtraiMes(dataPlantio));			
 		}
 		if (!dias.equals("") && idItemSelecionado == R.id.rbAplicaoEm)
 		{
@@ -74,7 +72,6 @@ public class FormularioTalhaoHelper {
 		}else if(calendario != null){
 			talhao = new Talhao(nomeTalhao, calendario, produtoAplicado,diasIniciaAplicacao);
 		}
-		
 		return talhao;		
 	}
 	public void setTalhao(Talhao talhao)
@@ -82,56 +79,8 @@ public class FormularioTalhaoHelper {
 		etNomeTalhao.setText(talhao.getNome());
 		etProdutoAplicado.setText(talhao.getProdutoAplicado());
 		Calendar calendario = talhao.getDataPlantio();
-		int dia = calendario.get(Calendar.DAY_OF_MONTH);
-		int mes = calendario.get(Calendar.MONTH);
-		int ano = calendario.get(Calendar.YEAR);	
-		etDataPlantio.setText(dia+"/"+(mes+1)+"/"+ano);
+		String dataPlantio = FormatacaoDeDatas.adicionaMes(calendario);	
+		etDataPlantio.setText(dataPlantio);
 	
 	}
-	public int string2month(String a)	
-	{
-		String mes = null;
-		if (a.length() == 8)
-		{
-			mes = a.substring(2, 3);
-		}else if(a.length() == 10)
-		{
-			mes = a.substring(3,5);
-		}else if(a.charAt(1) == '/')
-		{
-			mes = a.substring(2, 4);
-		}else{
-			mes = a.substring(3, 4);			
-		}
-		
-		return Integer.parseInt(mes);
-	}
-	public Calendar string2calendar(String a)	
-	{
-		String dia=null,mes = null,ano=null;
-		if (a.length() == 8)
-		{
-			dia = a.substring(0, 1);
-			mes = a.substring(2, 3);
-			ano = a.substring(4, 8);
-		}else if(a.length() == 10)
-		{
-			dia = a.substring(0, 2);
-			mes = a.substring(3,5);
-			ano = a.substring(6,10);
-		}else if(a.charAt(1) == '/')
-		{
-			dia = a.substring(0, 1);
-			mes = a.substring(2, 4);
-			ano = a.substring(5, 9);
-		}else{
-			dia = a.substring(0, 2);
-			mes = a.substring(3, 4);
-			ano = a.substring(5, 9);			
-		}
-		Calendar c = Calendar.getInstance();
-		c.set(Integer.parseInt(ano),Integer.parseInt(mes)-1,Integer.parseInt(dia),0,0,0);
-		return c;
-	}
-
 }

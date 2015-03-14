@@ -1,19 +1,18 @@
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/listaTalhao"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"     
+    android:layout_height="match_parent"   
     android:background="@drawable/background" 
     android:paddingTop="1sp"
-	android:paddingLeft="10dp"
-	android:paddingRight="10dp">
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
 
-    <ListView
+   <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
         android:dividerHeight="10dp"
+        android:layout_alignParentTop="true"
         android:divider="@android:color/transparent"/>
 
         <TextView
@@ -21,16 +20,29 @@
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:layout_gravity="center"
+             android:layout_centerInParent="true"
              android:text="@string/adicionar_talhao"
-             android:textAppearance="?android:attr/textAppearanceLarge" />
+             android:gravity="center"
+             android:textAppearance="?android:attr/textAppearanceLarge"
+             android:visibility="invisible"/>
 
         <ImageView
             android:id="@+id/imAddTalhao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/tvAddTalhao"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"            
+            android:contentDescription="@string/descricao_imagem"
+            android:onClick="adicionarTalhao"
             android:src="@drawable/ic_new" 
-            android:layout_gravity="center"  
-            android:contentDescription="@string/descricao_imagem"          
-            android:onClick="adicionarTalhao"/>
+            android:visibility="invisible"/>
 
-</LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressBarListaTalhao"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+        	android:visibility="invisible"/>
+</RelativeLayout>

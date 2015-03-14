@@ -1,8 +1,7 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-	android:orientation="vertical"
     tools:context="br.com.planejamentoagro.controller.InformacoesTecnicas" 
     android:background="@drawable/background"
     android:padding="10dp">
@@ -18,17 +17,30 @@
              android:id="@+id/tvAddInformacoes"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:layout_gravity="center"
+             android:layout_centerInParent="true"
+             android:gravity="center"
              android:text="@string/adicionar_informacoes"
-             android:textAppearance="?android:attr/textAppearanceLarge" />
+             android:textAppearance="?android:attr/textAppearanceLarge"
+             android:visibility="invisible"/>
 
         <ImageView
             android:id="@+id/imAddInformacoes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_new" 
-            android:layout_gravity="center"  
-            android:contentDescription="@string/descricao_imagem"          
-            android:onClick="adicionarInformacoes"/>
+            android:layout_above="@+id/tvAddInformacoes"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
+            android:contentDescription="@string/descricao_imagem"
+            android:onClick="adicionarInformacoes"
+            android:src="@drawable/ic_new"
+            android:visibility="invisible"/>
 
-</LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressBarInformacoesTecnicas"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:layout_centerInParent="true"
+            android:visibility="invisible"/>
+
+</RelativeLayout>

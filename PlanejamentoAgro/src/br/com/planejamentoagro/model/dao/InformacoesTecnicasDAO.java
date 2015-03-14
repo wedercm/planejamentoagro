@@ -13,13 +13,22 @@ public class InformacoesTecnicasDAO extends ModeloDAO<Informacoes>{
 	public static final String COLUNA_ID_TALHAO = "idTalhao";
 	public static final String COLUNA_INFORMACOES = "informacoes";
 	public static final String COLUNA_DATA_VISITA = "dataVisita";
+	public static final String SQL_CRIA_TABELA_INFORMACOES = new StringBuilder()
+			.append("CREATE TABLE ").append(NOME_TABELA).append("( ")
+			.append(COLUNA_ID).append(" INTEGER PRIMARY KEY autoincrement, ")
+			.append(COLUNA_ID_TALHAO).append(" TEXT NOT NULL,")
+			.append(COLUNA_INFORMACOES).append(" TEXT NOT NULL,")
+			.append(COLUNA_DATA_VISITA).append(" TEXT NOT  NULL,")
+			.append("FOREIGN KEY (").append(COLUNA_ID_TALHAO).append(") references ")
+			.append(TalhaoDAO.NOME_TABELA).append("(").append(TalhaoDAO.COLUNA_ID).append(") ON DELETE CASCADE)")
+			.toString();	
 	
-	public static final String SQL_CRIA_TABELA_INFORMACOES = "CREATE TABLE "+ NOME_TABELA + "( "
-			+COLUNA_ID+" INTEGER PRIMARY KEY autoincrement, "
-			+COLUNA_ID_TALHAO+" INTEGER NOT NULL, "
-			+COLUNA_INFORMACOES+" TEXT NOT NULL,"
-			+COLUNA_DATA_VISITA+" TEXT NOT  NULL,"
-			+ "FOREIGN KEY ("+COLUNA_ID_TALHAO+") references "+TalhaoDAO.NOME_TABELA+"("+TalhaoDAO.COLUNA_ID+") ON DELETE CASCADE)";
+//	public static final String SQL_CRIA_TABELA_INFORMACOES = "CREATE TABLE "+ NOME_TABELA + "( "
+//			+COLUNA_ID+" INTEGER PRIMARY KEY autoincrement, "
+//			+COLUNA_ID_TALHAO+" INTEGER NOT NULL, "
+//			+COLUNA_INFORMACOES+" TEXT NOT NULL,"
+//			+COLUNA_DATA_VISITA+" TEXT NOT  NULL,"
+//			+ "FOREIGN KEY ("+COLUNA_ID_TALHAO+") references "+TalhaoDAO.NOME_TABELA+"("+TalhaoDAO.COLUNA_ID+") ON DELETE CASCADE)";
 
 	
 	public static final String SQL_DELETA_TABELA_INFORMACOES = "DROP TABLE IF EXISTS " + NOME_TABELA;
@@ -38,7 +47,6 @@ public class InformacoesTecnicasDAO extends ModeloDAO<Informacoes>{
 	}
 	@Override
 	public String getNomeColunaForenKey() {
-		// TODO Auto-generated method stub
 		return COLUNA_ID_TALHAO;
 	}
 
@@ -56,9 +64,5 @@ public class InformacoesTecnicasDAO extends ModeloDAO<Informacoes>{
 		Informacoes info = new Informacoes(cursor.getInt(0), cursor.getInt(cursor.getColumnIndex(COLUNA_ID_TALHAO)), 
 				cursor.getString(cursor.getColumnIndex(COLUNA_DATA_VISITA)), cursor.getString(cursor.getColumnIndex(COLUNA_INFORMACOES)));
 		return info;
-	}
-	
-	
-
-	
+	}	
 }

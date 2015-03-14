@@ -2,8 +2,8 @@ package br.com.planejamentoagro.background;
 import java.util.Calendar;
 
 import br.com.planejamentoagro.R;
-import br.com.planejamentoagro.controller.ListaTalhao;
 import br.com.planejamentoagro.controller.MainActivity;
+import br.com.planejamentoagro.helper.FormatacaoDeDatas;
 import br.com.planejamentoagro.model.dao.TalhaoDAO;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -30,7 +30,7 @@ public class BackgroundReceiverHelper extends BroadcastReceiver {
 	{
 		TalhaoDAO talhaoDao = new TalhaoDAO(context);
 		Calendar c = Calendar.getInstance();
-		String data = c.get(Calendar.DAY_OF_MONTH)+"/"+c.get(Calendar.MONTH)+"/"+c.get(Calendar.YEAR);
+		String data = FormatacaoDeDatas.calendar2string(c);
 		boolean result = talhaoDao.verificarData(data);
 		talhaoDao.fecharConexao();
 		return result;
@@ -41,9 +41,9 @@ public class BackgroundReceiverHelper extends BroadcastReceiver {
 		PendingIntent p = PendingIntent.getActivity(context, 0, new Intent(context,MainActivity.class), 0);
 		
 		Notification.Builder builder = new Notification.Builder(context);
-		builder.setTicker("Aplicação para hoje.");
+		builder.setTicker("Aplicações hoje.");
 		builder.setContentTitle("Aplicação");
-		builder.setContentText("Existe uma aplicacação para hoje.");
+		builder.setContentText("Existe aplicacações para hoje.");
 		int SDK_INT = android.os.Build.VERSION.SDK_INT;
 		if(SDK_INT >= 21)
 			builder.setSmallIcon(R.drawable.ic_notification);
@@ -62,7 +62,7 @@ public class BackgroundReceiverHelper extends BroadcastReceiver {
 			Ringtone toque = RingtoneManager.getRingtone(context, som);
 			toque.play();
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		}
 	}
 }

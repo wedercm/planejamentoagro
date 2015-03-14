@@ -9,9 +9,11 @@ import br.com.planejamentoagro.helper.GeraInformacoesEntidades;
 import br.com.planejamentoagro.model.Cliente;
 import br.com.planejamentoagro.model.dao.ClienteDAO;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,10 +28,13 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
 public class ListaClientesFragment extends Fragment{
+	public static final String DELETOU_CLIENTE = "DELETOU_CLIENTE";
+	private SharedPreferences mPreference; 
 	private AdapterClienteListView adaptadorClientesListView =null;
 	private List<Cliente> listaDeClientes= null;
 	private ClienteDAO clienteDAO = null;
@@ -37,6 +42,7 @@ public class ListaClientesFragment extends Fragment{
 	private Cliente clienteSelecionadoToqueLista = null;
 	private TextView textViewCadastrarCliente;
 	private ImageView imageViewCadastrarCliente;
+	private ProgressBar progressBar;
 	public ListaClientesFragment() {
 		// TODO Auto-generated constructor stub
 	}
@@ -48,6 +54,7 @@ public class ListaClientesFragment extends Fragment{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);	
 		setHasOptionsMenu(true);
+		mPreference = getActivity().getSharedPreferences(DELETOU_CLIENTE, Context.MODE_PRIVATE);
 	}
 	@Override
 	public void onResume() {
@@ -62,6 +69,8 @@ public class ListaClientesFragment extends Fragment{
 		listViewClientes = (ListView) rootView.findViewById(R.id.listViewListaClientes);
 		textViewCadastrarCliente = (TextView) rootView.findViewById(R.id.tvAddCliente);
 		imageViewCadastrarCliente = (ImageView) rootView.findViewById(R.id.imAddCliente);
+		progressBar = (ProgressBar) rootView.findViewById(R.id.progressBarListaCliente);
+		mPreference.edit().putBoolean(DELETOU_CLIENTE, false);
 		registerForContextMenu(listViewClientes);
 		toqueCurtoItemLista(listViewClientes);
 		toqueLongoItemLista(listViewClientes);
@@ -169,7 +178,7 @@ public class ListaClientesFragment extends Fragment{
 					imageViewCadastrarCliente.setVisibility(View.VISIBLE);
 		        	textViewCadastrarCliente.setVisibility(View.VISIBLE);
 				}
-					
+				mPreference.edit().putBoolean(DELETOU_CLIENTE, true).commit();
 				clienteDAO.fecharConexao();
 				File diretorioImagens = new File(InformacoesTecnicas.CAMINHO_IMAGENS+nomeCliente);
 				if(diretorioImagens.exists())
@@ -191,17 +200,23 @@ public class ListaClientesFragment extends Fragment{
 		i.putExtra("CLIENTE_SELECIONADO", clienteSelecionadoToqueLista);
 		startActivity(i);
 	}
-	class AtualizaListaAsyncTask extends AsyncTask<Void, Void, List<Cliente>>
+	private class AtualizaListaAsyncTask extends AsyncTask<Void, Void, List<Cliente>>
 	{
+		@Override
+		protected void onProgressUpdate(Void... values) {
+			progressBar.setVisibility(View.VISIBLE);
+		}
 		@Override
 		protected List<Cliente> doInBackground(Void... params) {
 			clienteDAO = new ClienteDAO(getActivity());
 	        listaDeClientes = clienteDAO.listarTodos(ClienteDAO.COLUNA_NOME);
 	        clienteDAO.fecharConexao();
-			return listaDeClientes;
+	        publishProgress();
+	        return listaDeClientes;
 		}
 		@Override
 		protected void onPostExecute(List<Cliente> result) {
+			progressBar.setVisibility(View.INVISIBLE);
 			if(result.size() > 0){
 				imageViewCadastrarCliente.setVisibility(View.INVISIBLE);
 				textViewCadastrarCliente.setVisibility(View.INVISIBLE);

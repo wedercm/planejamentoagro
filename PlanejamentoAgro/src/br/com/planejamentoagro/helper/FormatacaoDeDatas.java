@@ -2,14 +2,14 @@ package br.com.planejamentoagro.helper;
 
 import java.util.Calendar;
 import java.util.Date;
+
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
 public final class FormatacaoDeDatas {
 	
 	FormatacaoDeDatas()
-	{
-		
+	{		
 	}
 
 	public static int diasRestantes(Date d1, Date d2)
@@ -22,7 +22,23 @@ public final class FormatacaoDeDatas {
 	{
 		Calendar c = Calendar.getInstance();
 		c.setTime(d);
-		return c.get(Calendar.DAY_OF_MONTH)+"/"+c.get(Calendar.MONTH)+"/"+c.get(Calendar.YEAR);
+		int dia = c.get(Calendar.DAY_OF_MONTH);
+		int mes = c.get(Calendar.MONTH);
+		int ano = c.get(Calendar.YEAR);
+		String data = new StringBuilder().append(dia).append("/")
+				.append(mes).append("/")
+				.append(ano).toString();
+		return data;
+	}
+	public static String calendar2string(Calendar c)
+	{
+		int dia = c.get(Calendar.DAY_OF_MONTH);
+		int mes = c.get(Calendar.MONTH);
+		int ano = c.get(Calendar.YEAR);
+		String data = new StringBuilder().append(dia).append("/")
+				.append(mes).append("/")
+				.append(ano).toString();
+		return data;
 	}
 	public static Date string2date(String a)	
 	{
@@ -48,7 +64,10 @@ public final class FormatacaoDeDatas {
 			ano = a.substring(5, 9);			
 		}
 		Calendar c = Calendar.getInstance();
-		c.set(Integer.parseInt(ano),Integer.parseInt(mes),Integer.parseInt(dia),0,0,0);
+		try {
+			c.set(Integer.parseInt(ano),Integer.parseInt(mes),Integer.parseInt(dia),0,0,0);
+		} catch (Exception e){
+		}		
 		Date d = new Date();
 		d = c.getTime();
 		return d;
@@ -56,6 +75,7 @@ public final class FormatacaoDeDatas {
 	public static int string2month(String a)	
 	{
 		String mes = null;
+		int month=0;
 		if (a.length() == 8)
 		{
 			mes = a.substring(2, 3);
@@ -69,7 +89,13 @@ public final class FormatacaoDeDatas {
 			mes = a.substring(3, 4);			
 		}
 		
-		return Integer.parseInt(mes);
+		try{
+			month = Integer.parseInt(mes);
+		}catch(NumberFormatException e)
+		{
+			
+		}
+		return month;
 	}
 	public static Calendar string2calendar(String a)	
 	{
@@ -95,7 +121,12 @@ public final class FormatacaoDeDatas {
 			ano = a.substring(5, 9);			
 		}
 		Calendar c = Calendar.getInstance();
-		c.set(Integer.parseInt(ano),Integer.parseInt(mes),Integer.parseInt(dia),0,0,0);
+		try {
+			c.set(Integer.parseInt(ano),Integer.parseInt(mes),Integer.parseInt(dia),0,0,0);
+		} catch (NumberFormatException e) 
+		{
+			
+		}
 		return c;
 	}
 	public static String subtraiMes(String data)
@@ -121,7 +152,20 @@ public final class FormatacaoDeDatas {
 			mes = data.substring(3, 4);
 			ano = data.substring(5, 9);			
 		}
-		return Integer.parseInt(dia)+"/"+(Integer.parseInt(mes)-1)+"/"+Integer.parseInt(ano);
+		int mesModificado=0;
+		String dataRetorno;
+		try{
+			mesModificado = Integer.parseInt(mes)-1;
+			dataRetorno = new StringBuilder().append(dia).append("/")
+					.append(mesModificado).append("/")
+					.append(ano).toString();
+		}catch(NumberFormatException e){
+			dataRetorno = new StringBuilder().append(dia).append("/")
+					.append(mes).append("/")
+					.append(ano).toString();
+		}
+		
+		return dataRetorno;
 	}
 	public static String adicionaMes(String data)
 	{
@@ -146,7 +190,30 @@ public final class FormatacaoDeDatas {
 			mes = data.substring(3, 4);
 			ano = data.substring(5, 9);			
 		}
-		return Integer.parseInt(dia)+"/"+(Integer.parseInt(mes)+1)+"/"+Integer.parseInt(ano);
+		int mesModificado=0;
+		String dataRetorno;
+		try{
+			mesModificado = Integer.parseInt(mes)+1;
+			dataRetorno = new StringBuilder().append(dia).append("/")
+					.append(mesModificado).append("/")
+					.append(ano).toString();
+		}catch(NumberFormatException e){
+			dataRetorno = new StringBuilder().append(dia).append("/")
+					.append(mes).append("/")
+					.append(ano).toString();
+		}		
+		return dataRetorno;
+	}
+	public static String adicionaMes(Calendar calendario)
+	{
+		int dia = calendario.get(Calendar.DAY_OF_MONTH);
+		int mes = calendario.get(Calendar.MONTH);
+		int ano = calendario.get(Calendar.YEAR);
+		int mesModificado= mes + 1;;
+		String  dataRetorno = new StringBuilder().append(dia).append("/")
+					.append(mesModificado).append("/")
+					.append(ano).toString();
+		return dataRetorno;
 	}
 }
 

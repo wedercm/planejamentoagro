@@ -27,19 +27,16 @@ public class AdapterTalhaoComAplicacaoListView extends BaseAdapter{
 	}
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return itens.size();
 	}
 
 	@Override
 	public Talhao getItem(int position) {
-		// TODO Auto-generated method stub
 		return itens.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		
 		return itens.get(position).getId();
 	}
 
@@ -50,8 +47,7 @@ public class AdapterTalhaoComAplicacaoListView extends BaseAdapter{
 		if(view == null)
 		{
 			view = mInflater.inflate(R.layout.item_listview_talhao_aplicacao, parent,false);
-			vHolder = new ViewHolder();
-			
+			vHolder = new ViewHolder();			
 			vHolder.textViewNomeCliente = (TextView) view.findViewById(R.id.textViewNomeCliente);
 			vHolder.textViewNomeTalhao = (TextView) view.findViewById(R.id.textViewNomeTalhao);
 			vHolder.textViewDiasParaProximaAplicacao = (TextView) view.findViewById(R.id.itemListDiasParaAplicacao);			
@@ -76,7 +72,9 @@ public class AdapterTalhaoComAplicacaoListView extends BaseAdapter{
 				{
 					vHolder.textViewDiasParaProximaAplicacao.setTextColor(Color.RED);
 				}else vHolder.textViewDiasParaProximaAplicacao.setTextColor(Color.WHITE);
-				vHolder.textViewDiasParaProximaAplicacao.setText(diasParaProximaAplicacao+" "+dias);
+				String textTextViewProximaAplicacao = new StringBuilder().append(diasParaProximaAplicacao)
+						.append(" ").append(dias).toString();
+				vHolder.textViewDiasParaProximaAplicacao.setText(textTextViewProximaAplicacao);
 			}else vHolder.textViewDiasParaProximaAplicacao.setText("Todas aplicações realizadas.");
 		}
 		return view;

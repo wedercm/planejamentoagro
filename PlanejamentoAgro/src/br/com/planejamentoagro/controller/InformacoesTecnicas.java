@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.com.planejamentoagro.R;
 import br.com.planejamentoagro.adpter.AdapterInformacoesListView;
+import br.com.planejamentoagro.helper.DiretoriosHelper;
 import br.com.planejamentoagro.model.Informacoes;
 import br.com.planejamentoagro.model.dao.InformacoesTecnicasDAO;
 import br.com.planejamentoagro.model.dao.TalhaoDAO;
@@ -17,6 +18,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.media.MediaScannerConnection;
 import android.media.MediaScannerConnection.MediaScannerConnectionClient;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -28,18 +30,23 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class InformacoesTecnicas extends Activity {
 	public static final String CAMINHO_IMAGENS = Environment.getExternalStorageDirectory()+"/PlanejamentoAgro/";
+	public static final String EXTRA_ID_INFO = "EXTRA_ID_INFO";
+	public static final String EXTRA_INFO = "EXTRA_INFO";
+	public static final String EXTRA_DATA_INFO = "EXTRA_DATA_INFO";
 	private List<Informacoes> arrayInformacoes;
 	private AdapterInformacoesListView informacoesAdapter;
 	private ListView lvListaInformacoes;
 	private Informacoes infoSelecionada=null;
 	private ImageView ivAddInfo;
 	private TextView tvAddInfo;
-	String localFoto = null;
+	private ProgressBar progressBar;
+	String localImagemInformacao = null;
 	private int idTalhao;
 	private InformacoesTecnicasDAO infoDAO;
 	private String nomeTalhao, nomeCliente;
@@ -56,6 +63,7 @@ public class InformacoesTecnicas extends Activity {
 		lvListaInformacoes = (ListView) findViewById(R.id.list);
 		ivAddInfo = (ImageView) findViewById(R.id.imAddInformacoes);
 		tvAddInfo = (TextView) findViewById(R.id.tvAddInformacoes);	
+		progressBar = (ProgressBar) findViewById(R.id.progressBarInformacoesTecnicas);
 		ClickLongo(lvListaInformacoes);
 		ClickCurto(lvListaInformacoes);
 		registerForContextMenu(lvListaInformacoes);
@@ -72,37 +80,16 @@ public class InformacoesTecnicas extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		carregarInformacoes();
-	}
-
-	public void carregarInformacoes(){
-		this.infoDAO = new InformacoesTecnicasDAO(InformacoesTecnicas.this);
-		this.arrayInformacoes = this.infoDAO.listaPorFK(this.idTalhao,InformacoesTecnicasDAO.COLUNA_DATA_VISITA);
-		
-		if(arrayInformacoes.size() > 0)
-		{
-			ivAddInfo.setVisibility(View.INVISIBLE);
-			tvAddInfo.setVisibility(View.INVISIBLE);
-		}else{
-			ivAddInfo.setVisibility(View.VISIBLE);
-			tvAddInfo.setVisibility(View.VISIBLE);
-		}
-		
-		infoDAO.fecharConexao();
-		this.informacoesAdapter = new AdapterInformacoesListView(getApplicationContext(), arrayInformacoes);
-		this.lvListaInformacoes.setAdapter(informacoesAdapter);
+		AtualizaListaAsyncTask task = new AtualizaListaAsyncTask();
+		task.execute();
 	}
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-		if(requestCode == REQUEST_CAMERA)
-		{
-			if(resultCode == Activity.RESULT_OK)
-			{
-				Toast.makeText(getApplicationContext(), "Imagem salva com sucesso.", Toast.LENGTH_SHORT).show();
-			}Toast.makeText(getApplicationContext(), "Imagem não foi salva.", Toast.LENGTH_SHORT).show();
-		}
+		if(requestCode == REQUEST_CAMERA && resultCode == Activity.RESULT_OK)
+			Toast.makeText(getApplicationContext(), "Imagem salva com sucesso.", Toast.LENGTH_SHORT).show();
+		else Toast.makeText(getApplicationContext(), "Imagem não foi salva.", Toast.LENGTH_SHORT).show(); 
 	}
 
 
@@ -146,27 +133,44 @@ public class InformacoesTecnicas extends Activity {
 			tirarFoto();
 			break;
 		case R.id.menuEditar:
-//			editarTalhao();
+			editarInformacoes();
 			break;
 		default:
 			break;
 		}
 		return super.onContextItemSelected(item);		
 	}
+	private void editarInformacoes(){
+		Intent i = new Intent(InformacoesTecnicas.this,CadastraInformacoes.class);
+		i.putExtra(TalhaoDAO.COLUNA_ID, infoSelecionada.getIdTalhao());
+		i.putExtra(EXTRA_ID_INFO, infoSelecionada.getId());
+		i.putExtra(EXTRA_INFO, infoSelecionada.getInformacoes());
+		i.putExtra(EXTRA_DATA_INFO, infoSelecionada.getDataVisita());
+		startActivity(i);
+	}
 	private void tirarFoto()
 	{
-		File diretorioImagens = new File(CAMINHO_IMAGENS+nomeCliente+"/"+nomeTalhao+"/"+infoSelecionada.getId());
-		File rootDirectory = new File(CAMINHO_IMAGENS+".nomedia");
-		if(!rootDirectory.exists())
+		String caminhoPastaImagensInformacao = new StringBuilder().append(CAMINHO_IMAGENS)
+				.append(nomeCliente)
+				.append("/")
+				.append(nomeTalhao)
+				.append("/")
+				.append(infoSelecionada.getId()).toString();
+		File diretorioImagensInfomacao = new File(caminhoPastaImagensInformacao);
+//		File rootDirectory = new File(CAMINHO_IMAGENS+".nomedia");
+//		if(!rootDirectory.exists())
+//		{
+//			rootDirectory.mkdirs();
+//		}
+		if(!diretorioImagensInfomacao.exists())
 		{
-			rootDirectory.mkdirs();
+			diretorioImagensInfomacao.mkdirs();			
 		}
-		if(!diretorioImagens.exists())
-		{
-			diretorioImagens.mkdirs();			
-		}
-		this.localFoto = diretorioImagens+"/"+System.currentTimeMillis()+".jpg";		
-		File foto = new File(localFoto);
+		this.localImagemInformacao = new StringBuilder().append(diretorioImagensInfomacao)
+				.append("/")
+				.append(System.currentTimeMillis())
+				.append(".jpg").toString();		
+		File foto = new File(localImagemInformacao);
 		Uri uriFoto = Uri.fromFile(foto);		
 		Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		i.putExtra(MediaStore.EXTRA_OUTPUT, uriFoto);
@@ -206,8 +210,11 @@ public class InformacoesTecnicas extends Activity {
 				File diretorioImagens = new File(CAMINHO_IMAGENS+nomeCliente+"/"+nomeTalhao+"/"+infoSelecionada.getId());
 				  if(diretorioImagens.exists())
 				  {
-					  allFiles = diretorioImagens.listFiles();		        
-				      new SingleMediaScanner(InformacoesTecnicas.this, allFiles[0]);
+					  allFiles = diretorioImagens.listFiles();
+					  if(allFiles.length > 0){
+						  new SingleMediaScanner(InformacoesTecnicas.this, allFiles[0]);
+					  }
+					  else Toast.makeText(getApplicationContext(), "Não existe imagens para esssa visita.", Toast.LENGTH_SHORT).show();
 				  }else Toast.makeText(getApplicationContext(), "Não existe imagens para esssa visita.", Toast.LENGTH_SHORT).show();
 				
 			}					
@@ -235,8 +242,19 @@ public class InformacoesTecnicas extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				infoDAO= new InformacoesTecnicasDAO(getApplicationContext());
 				infoDAO.deletar(infoSelecionada);
-				carregarInformacoes();				
-				infoSelecionada = null;				
+				informacoesAdapter.remove(infoSelecionada);
+				if(informacoesAdapter.getCount() <= 0)
+				{
+					tvAddInfo.setVisibility(View.VISIBLE);
+					ivAddInfo.setVisibility(View.VISIBLE);
+				}
+				File diretorioImagens = new File(InformacoesTecnicas.CAMINHO_IMAGENS+nomeCliente+"/"+nomeTalhao+"/"+infoSelecionada.getId());
+				
+				if(diretorioImagens.exists())
+				{
+					DiretoriosHelper.deleteDirectory(diretorioImagens);
+				}
+				infoSelecionada = null;
 			}
 			
 		});
@@ -244,5 +262,41 @@ public class InformacoesTecnicas extends Activity {
 		AlertDialog dialog = builder.create();
 		dialog.setTitle("Confirmar operação");
 		dialog.show();
+	}
+	private class AtualizaListaAsyncTask extends AsyncTask<Void, Void, List<Informacoes>>
+	{
+		@Override
+		protected void onProgressUpdate(Void... values){
+			progressBar.setVisibility(View.VISIBLE);
+		}
+
+		@Override
+		protected List<Informacoes	> doInBackground(Void... params){
+			publishProgress();
+			infoDAO = new InformacoesTecnicasDAO(InformacoesTecnicas.this);
+			arrayInformacoes = infoDAO.listaPorFK(idTalhao,InformacoesTecnicasDAO.COLUNA_DATA_VISITA);
+	        infoDAO.fecharConexao();
+			return arrayInformacoes;
+		}
+		@Override
+		protected void onPostExecute(List<Informacoes> result) {
+			progressBar.setVisibility(View.INVISIBLE);
+			if(result.size() > 0){
+				ivAddInfo.setVisibility(View.INVISIBLE);
+				tvAddInfo.setVisibility(View.INVISIBLE);
+				if(informacoesAdapter == null){
+					informacoesAdapter = new AdapterInformacoesListView(InformacoesTecnicas.this, result);
+					lvListaInformacoes.setAdapter(informacoesAdapter);
+				}else{
+					informacoesAdapter.clear();
+					informacoesAdapter.addAll(result);
+					lvListaInformacoes.setAdapter(informacoesAdapter);
+				}
+			}else
+			{
+				ivAddInfo.setVisibility(View.VISIBLE);
+				tvAddInfo.setVisibility(View.VISIBLE);
+			}
+		}		
 	}
 }

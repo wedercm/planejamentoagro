@@ -33,8 +33,6 @@ public class FormularioEditaTalhaoHelper {
 		this.tvDataAplicacao5 = (TextView)  activity.findViewById(R.id.tvDataAplicacao5);
 		this.tvDataAplicacao6 = (TextView)  activity.findViewById(R.id.tvDataAplicacao6);		
 		this.etDataPlantio.setEnabled(false);
-		
-		
 	}
 	public Talhao getTalhao()
 	{
@@ -71,10 +69,8 @@ public class FormularioEditaTalhaoHelper {
 		etNomeTalhao.setText(talhao.getNome());
 		etProdutoAplicado.setText(talhao.getProdutoAplicado());
 		Calendar calendario = talhao.getDataPlantio();
-		int dia = calendario.get(Calendar.DAY_OF_MONTH);
-		int mes = calendario.get(Calendar.MONTH);
-		int ano = calendario.get(Calendar.YEAR);	
-		etDataPlantio.setText(dia+"/"+(mes+1)+"/"+ano);		
+		String data = FormatacaoDeDatas.adicionaMes(calendario);
+		etDataPlantio.setText(data);		
 		this.talhao = talhao;
 	}
 	public void setDatasTalhao(Talhao talhao)
@@ -152,6 +148,4 @@ public class FormularioEditaTalhaoHelper {
 		tvDataAplicacao5.setText(FormatacaoDeDatas.adicionaMes(talhao.getDataAplicacao5()));
 		tvDataAplicacao6.setText(FormatacaoDeDatas.adicionaMes(talhao.getDataAplicacao6()));
 	}
-	
-
 }

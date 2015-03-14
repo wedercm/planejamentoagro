@@ -3,13 +3,12 @@ package br.com.planejamentoagro.model;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+
 import br.com.planejamentoagro.helper.FormatacaoDeDatas;
 import br.com.planejamentoagro.inteface.EntidadePersistivel;
 
 public class Talhao implements Serializable, EntidadePersistivel{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private String nome, nomeCliente;
 	private int id;
@@ -324,20 +323,14 @@ public class Talhao implements Serializable, EntidadePersistivel{
 		int mesAplicacao6 = (c.get(Calendar.MONTH))+1;
 		int anoAplicacao6 = c.get(Calendar.YEAR);
 		
-		
-		return 	"\nData Plantio: "+diaPlantio+"/"+mesPlantio+"/"+anoPlantio+				
-				"\n1ª Aplicação: "+diaAplicacao1+"/"+mesAplicacao1+"/"+anoAplicacao1+
-				"\n2ª Aplicação: "+diaAplicacao2+"/"+mesAplicacao2+"/"+anoAplicacao2+
-				"\n3ª Aplicação: "+diaAplicacao3+"/"+mesAplicacao3+"/"+anoAplicacao3+
-				"\n4ª Aplicação: "+diaAplicacao4+"/"+mesAplicacao4+"/"+anoAplicacao4+
-				"\n5ª Aplicação: "+diaAplicacao5+"/"+mesAplicacao5+"/"+anoAplicacao5+
-				"\n6ª Aplicação: "+diaAplicacao6+"/"+mesAplicacao6+"/"+anoAplicacao6; 
-	}
-	@Override
-	public String toString()
-	{
-		return this.nome+":"+dataPlantio.get(Calendar.DAY_OF_MONTH)+"/"+dataPlantio.get(Calendar.MONTH)+"/"+dataPlantio.get(Calendar.YEAR);
-	}
-	
-	
+		String informacoes = new StringBuilder()
+				.append("\nData Plantio: ").append(diaPlantio).append("/").append(mesPlantio).append("/").append(anoPlantio)
+				.append("\n1ª Aplicação: ").append(diaAplicacao1).append("/").append(mesAplicacao1).append("/").append(anoAplicacao1)
+				.append("\n2ª Aplicação: ").append(diaAplicacao2).append("/").append(mesAplicacao2).append("/").append(anoAplicacao2)
+				.append("\n3ª Aplicação: ").append(diaAplicacao3).append("/").append(mesAplicacao3).append("/").append(anoAplicacao3)
+				.append("\n4ª Aplicação: ").append(diaAplicacao4).append("/").append(mesAplicacao4).append("/").append(anoAplicacao4)
+				.append("\n5ª Aplicação: ").append(diaAplicacao5).append("/").append(mesAplicacao5).append("/").append(anoAplicacao5)
+				.append("\n6ª Aplicação: ").append(diaAplicacao6).append("/").append(mesAplicacao6).append("/").append(anoAplicacao6).toString();
+		return 	informacoes; 
+	}	
 }

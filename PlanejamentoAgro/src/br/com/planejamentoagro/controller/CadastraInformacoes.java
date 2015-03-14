@@ -20,6 +20,8 @@ public class CadastraInformacoes extends Activity {
 	private EditText etInformacoes, etDataVisita;
 	private int idTalhao;
 	private Informacoes info;
+	private String dataInfo, informacoes;
+	private int idInfo;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +30,14 @@ public class CadastraInformacoes extends Activity {
 		etInformacoes = (EditText) findViewById(R.id.etInformacoes);
 		etDataVisita = (EditText) findViewById(R.id.etDataVisita);
 		this.idTalhao = getIntent().getIntExtra(TalhaoDAO.COLUNA_ID,-1);
-
+		this.idInfo = getIntent().getIntExtra(InformacoesTecnicas.EXTRA_ID_INFO, -1);
+		this.informacoes = getIntent().getStringExtra(InformacoesTecnicas.EXTRA_INFO);
+		this.dataInfo = getIntent().getStringExtra(InformacoesTecnicas.EXTRA_DATA_INFO);
+		if(idInfo != -1)
+		{
+			etInformacoes.setText(informacoes);
+			etDataVisita.setText(dataInfo);
+		}
 	}
 	private void salvar()
 	{
@@ -40,6 +49,21 @@ public class CadastraInformacoes extends Activity {
 			info = new Informacoes(0, this.idTalhao, dataVisita, informacoes);
 			InformacoesTecnicasDAO infoDAO = new InformacoesTecnicasDAO(getApplicationContext());
 			infoDAO.salvar(info);
+			infoDAO.fecharConexao();
+			finish();
+			Toast.makeText(CadastraInformacoes.this, "Informações cadastradas.", Toast.LENGTH_SHORT).show();
+		}else Toast.makeText(CadastraInformacoes.this, "Todos campos são obrigatórios.", Toast.LENGTH_SHORT).show();
+	}
+	private void editar()
+	{
+		String dataVisita, informacoes;
+		informacoes = etInformacoes.getText().toString();
+		dataVisita = etDataVisita.getText().toString();
+		if(!informacoes.equals("") && !dataVisita.equals(""))
+		{
+			info = new Informacoes(this.idInfo, this.idTalhao, dataVisita, informacoes);
+			InformacoesTecnicasDAO infoDAO = new InformacoesTecnicasDAO(getApplicationContext());
+			infoDAO.editar(info);
 			infoDAO.fecharConexao();
 			finish();
 			Toast.makeText(CadastraInformacoes.this, "Informações cadastradas.", Toast.LENGTH_SHORT).show();
@@ -78,7 +102,9 @@ public class CadastraInformacoes extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_save){
-			salvar();
+			if(this.idInfo == -1)
+				salvar();
+			else editar();
 			return true;
 		}
 		if (id == android.R.id.home)

@@ -14,10 +14,15 @@ public class ClienteDAO extends ModeloDAO<Cliente>{
 	public static final String COLUNA_NOME = "nomeCliente";
 	public static final String COLUNA_MUNICIPIO = "municipio";
 	public static final String COLUNA_NOME_FAZENDA = "nomeFazenda";
-	
-	public static final String SQL_CRIA_TABELA_CLIENTE = "CREATE TABLE "+ NOME_TABELA + "( "
-			+COLUNA_ID+" INTEGER PRIMARY KEY autoincrement, "
-			+COLUNA_NOME+" TEXT UNIQUE,"+COLUNA_MUNICIPIO+" TEXT, "+COLUNA_NOME_FAZENDA+" TEXT)";
+	public static final String SQL_CRIA_TABELA_CLIENTE = new StringBuilder()
+					.append("CREATE TABLE ").append(NOME_TABELA).append("( ")
+					.append(COLUNA_ID).append(" INTEGER PRIMARY KEY autoincrement,")
+					.append(COLUNA_NOME).append(" TEXT UNIQUE,").append(COLUNA_MUNICIPIO).append(" TEXT,")
+					.append(COLUNA_NOME_FAZENDA).append(" TEXT)").toString();
+			
+//	public static final String SQL_CRIA_TABELA_CLIENTE = "CREATE TABLE "+ NOME_TABELA + "( "
+//			+COLUNA_ID+" INTEGER PRIMARY KEY autoincrement, "
+//			+COLUNA_NOME+" TEXT UNIQUE,"+COLUNA_MUNICIPIO+" TEXT, "+COLUNA_NOME_FAZENDA+" TEXT)";
 	
 	public static final String SQL_DELETA_TABELA_CLIENTE = "DROP TABLE IF EXISTS " + NOME_TABELA;
 	

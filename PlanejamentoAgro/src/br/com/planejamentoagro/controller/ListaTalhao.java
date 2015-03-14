@@ -13,6 +13,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -22,6 +23,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class ListaTalhao extends Activity {
@@ -34,6 +36,8 @@ public class ListaTalhao extends Activity {
 	private TalhaoDAO talhaoDAO;
 	private ImageView imAddTalhao;
 	private TextView tvAddTalhao;
+	private ProgressBar progressBar;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,7 @@ public class ListaTalhao extends Activity {
 		lvListaTalhao = (ListView) findViewById(R.id.list);
 		imAddTalhao = (ImageView) findViewById(R.id.imAddTalhao);
 		tvAddTalhao = (TextView) findViewById(R.id.tvAddTalhao);
+		progressBar = (ProgressBar) findViewById(R.id.progressBarListaTalhao);
 		registerForContextMenu(lvListaTalhao);
 		this.idCliente = getIntent().getIntExtra("ID_CLIENTE",-1);
 		this.nomeCliente = getIntent().getStringExtra("NOME_CLIENTE");
@@ -51,24 +56,8 @@ public class ListaTalhao extends Activity {
 	}
 	protected void onResume() {
 		super.onResume();
-		this.carregarTalhoes();
-	}
-	public void carregarTalhoes(){
-		talhaoDAO = new TalhaoDAO(ListaTalhao.this);
-		this.arrayTalhao = this.talhaoDAO.listaPorFK(this.idCliente,TalhaoDAO.COLUNA_DATA_PLANTIO);
-		
-		if(arrayTalhao.size() > 0)
-		{
-			imAddTalhao.setVisibility(View.INVISIBLE);
-			tvAddTalhao.setVisibility(View.INVISIBLE);
-		}else{
-			imAddTalhao.setVisibility(View.VISIBLE);
-			tvAddTalhao.setVisibility(View.VISIBLE);
-		}
-		
-		talhaoDAO.fecharConexao();
-		this.talhaoAdapter = new AdapterTalhaoListView(getApplicationContext(), arrayTalhao);
-		this.lvListaTalhao.setAdapter(talhaoAdapter);
+		AtualizaListaAsyncTask task = new AtualizaListaAsyncTask();
+		task.execute();
 	}
 
 	@Override
@@ -141,7 +130,6 @@ public class ListaTalhao extends Activity {
 		    public boolean onItemLongClick(AdapterView<?> parent, View v, int position,long id)
 		    {
 		    	talhaoSelecionado = (Talhao) talhaoAdapter.getItem(position);
-		    	carregarTalhoes();
 		    	return false;
 		    }
 		});
@@ -158,8 +146,9 @@ public class ListaTalhao extends Activity {
 	private void deletarTalhao()
 	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("Deseja deletar o talhão "+ talhaoSelecionado.getNome()+ "?"
-				+ "WARNING: Todas informações dos talhões e fotos serão deletadas.");
+		String message = new StringBuilder("Deseja deletar o ").append(talhaoSelecionado.getNome()).append("?")
+				.append("WARNING: Todas informações dos talhões e fotos serão deletadas.").toString();
+		builder.setMessage(message);
 		builder.setPositiveButton("Sim", new OnClickListener() {
 
 			@Override
@@ -167,8 +156,14 @@ public class ListaTalhao extends Activity {
 				talhaoDAO = new TalhaoDAO(ListaTalhao.this);
 				String nomeTalhao = talhaoSelecionado.getNome();
 				talhaoDAO.deletar(talhaoSelecionado);
-				File diretorioImagens = new File(InformacoesTecnicas.CAMINHO_IMAGENS+nomeCliente+"/"+nomeCliente+"-"+nomeTalhao);
-				carregarTalhoes();
+				talhaoAdapter.remove(talhaoSelecionado);
+				if(talhaoAdapter.getCount() <= 0)
+				{
+					tvAddTalhao.setVisibility(View.VISIBLE);
+					imAddTalhao.setVisibility(View.VISIBLE);
+				}
+
+				File diretorioImagens = new File(InformacoesTecnicas.CAMINHO_IMAGENS+nomeCliente+"/"+nomeTalhao);
 				if(diretorioImagens.exists())
 				{
 					DiretoriosHelper.deleteDirectory(diretorioImagens);
@@ -199,6 +194,42 @@ public class ListaTalhao extends Activity {
 		i.putExtra("ID_CLIENTE", this.idCliente);
 		i.putExtra("NOME_CLIENTE", this.nomeCliente);
 		startActivityForResult(i, this.idCliente);
+	}
+	private class AtualizaListaAsyncTask extends AsyncTask<Void, Void, List<Talhao>>
+	{
+		@Override
+		protected void onProgressUpdate(Void... values){
+			progressBar.setVisibility(View.VISIBLE);
+		}
+
+		@Override
+		protected List<Talhao> doInBackground(Void... params){
+			publishProgress();
+			talhaoDAO = new TalhaoDAO(ListaTalhao.this);
+			arrayTalhao = talhaoDAO.listaPorFK(idCliente,TalhaoDAO.COLUNA_DATA_PLANTIO);
+	        talhaoDAO.fecharConexao();
+			return arrayTalhao;
+		}
+		@Override
+		protected void onPostExecute(List<Talhao> result) {
+			progressBar.setVisibility(View.INVISIBLE);
+			if(result.size() > 0){
+	        	tvAddTalhao.setVisibility(View.INVISIBLE);
+	        	imAddTalhao.setVisibility(View.INVISIBLE);
+				if(talhaoAdapter == null){
+					talhaoAdapter = new AdapterTalhaoListView(ListaTalhao.this, result);
+					lvListaTalhao.setAdapter(talhaoAdapter);
+				}else{
+					talhaoAdapter.clear();
+					talhaoAdapter.addAll(result);
+					lvListaTalhao.setAdapter(talhaoAdapter);
+				}
+			}else
+			{
+				tvAddTalhao.setVisibility(View.VISIBLE);
+				imAddTalhao.setVisibility(View.VISIBLE);
+			}
+		}		
 	}
 
 }
