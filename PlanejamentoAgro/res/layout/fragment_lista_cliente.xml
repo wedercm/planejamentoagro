@@ -4,7 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"     
     android:background="@drawable/background" 
-    android:padding="10dp">
+    android:paddingTop="1sp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
 
     <ListView
         android:id="@+id/listViewListaClientes"

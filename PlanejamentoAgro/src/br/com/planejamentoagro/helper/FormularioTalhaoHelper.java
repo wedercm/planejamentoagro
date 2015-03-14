@@ -5,18 +5,22 @@ import java.util.Calendar;
 import br.com.planejamentoagro.R;
 import br.com.planejamentoagro.model.Talhao;
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 
 public class FormularioTalhaoHelper {
 	private EditText etNomeTalhao, etDataPlantio, etProdutoAplicado, etDias;
 	private RadioGroup rgAplicacao;
 	private RadioButton rbAplicacao22;
+	private Context context;
 	public FormularioTalhaoHelper(Activity activity)
 	{
+		this.context = activity;
 		this.etNomeTalhao = (EditText) activity.findViewById(R.id.etNomeTalhao);
 		this.etDataPlantio = (EditText) activity.findViewById(R.id.etDataPlantio);
 		this.etProdutoAplicado = (EditText) activity.findViewById(R.id.etProdutoAplicado);
@@ -55,7 +59,13 @@ public class FormularioTalhaoHelper {
 		}
 		if (!dias.equals("") && idItemSelecionado == R.id.rbAplicaoEm)
 		{
-			diasIniciaAplicacao = Integer.parseInt(dias);		
+			try{
+				diasIniciaAplicacao = Integer.parseInt(dias);
+			}catch(NumberFormatException e)
+			{
+				Toast.makeText(this.context, "Número muito grande.", Toast.LENGTH_SHORT).show();
+				diasIniciaAplicacao = -1;
+			}
 		}else diasIniciaAplicacao = -1;
 		
 		if (idItemSelecionado == R.id.rbAplicacao22 && calendario != null)

@@ -1,7 +1,9 @@
 package br.com.planejamentoagro.model.dao;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -57,15 +59,9 @@ public abstract class ModeloDAO <T extends EntidadePersistivel> {
 		else sql = "SELECT * FROM "+getNomeTabela();
 		return recuperaPorSQL(sql);
 	}
-	public List<T> listarPorDatas(String data)
-	{
-		String sql =  "SELECT * FROM "+getNomeTabela()+" WHERE "+TalhaoDAO.COLUNA_DATA_APLICACAO_1+ "= '"+data+"'"
-				+ " OR "+TalhaoDAO.COLUNA_DATA_APLICACAO_2+ "= '"+data+"'"		
-				+ " OR "+TalhaoDAO.COLUNA_DATA_APLICACAO_3+ "= '"+data+"'"
-				+ " OR "+TalhaoDAO.COLUNA_DATA_APLICACAO_4+ "= '"+data+"'"
-				+ " OR "+TalhaoDAO.COLUNA_DATA_APLICACAO_5+ "= '"+data+"'"
-				+ " OR "+TalhaoDAO.COLUNA_DATA_APLICACAO_6+ "= '"+data+"' ORDER BY "+TalhaoDAO.COLUNA_NOME;
-		return recuperaPorSQL(sql);
+	public List<T> listarTalhoesComAplicacao(int dias)
+	{		
+		return recuperaPorSQL(getSqlListarTalhoesComAplicacao(dias));
 	}
 	public List<T> listarPorID(int id, String ordenar)
 	{
@@ -121,5 +117,39 @@ public abstract class ModeloDAO <T extends EntidadePersistivel> {
 	{
 		if(dataBase != null && dataBase.isOpen())
 			dataBase.close();
-	}	
+	}
+	private String getSqlListarTalhoesComAplicacao(int day)
+	{
+		String sql = "Select * from Talhao WHERE ";
+		Calendar c = Calendar.getInstance();
+		for(int i=0;i<=day;++i)
+		{
+			
+			String data = new StringBuffer().append(c.get(Calendar.DAY_OF_MONTH))
+					.append("/")
+					.append(c.get(Calendar.MONTH))
+					.append("/")
+					.append(c.get(Calendar.YEAR)).toString();
+			if(i < day)
+			{
+				sql = new StringBuilder().append(sql).append("dataAplicacao1 like ").append("'").append(data).append("'")
+						.append(" OR dataAplicacao2 like ").append("'").append(data).append("'")
+						.append(" OR dataAplicacao3 like ").append("'").append(data).append("'")
+						.append(" OR dataAplicacao4 like ").append("'").append(data).append("'")
+						.append(" OR dataAplicacao5 like ").append("'").append(data).append("'")
+						.append(" OR dataAplicacao6 like ").append("'").append(data).append("'")
+						.append(" OR ").toString();
+			}else{
+				sql = new StringBuilder().append(sql).append("dataAplicacao1 like ").append("'").append(data).append("'")
+						.append(" OR dataAplicacao2 like ").append("'").append(data).append("'")
+						.append(" OR dataAplicacao3 like ").append("'").append(data).append("'")
+						.append(" OR dataAplicacao4 like ").append("'").append(data).append("'")
+						.append(" OR dataAplicacao5 like ").append("'").append(data).append("'")
+						.append(" OR dataAplicacao6 like ").append("'").append(data).append("'").toString();
+			}
+			c.add(Calendar.DAY_OF_MONTH, 1);
+		}
+		sql = new StringBuilder(sql).append(" ORDER BY ").append(TalhaoDAO.COLUNA_DATA_PLANTIO).toString();
+		return sql;
+	}
 }

@@ -14,11 +14,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
+import android.view.ViewGroup;
 
 
 public class TabPagerAdapter extends FragmentPagerAdapter {
 	private static List<Fragment> fragments = new ArrayList<Fragment>();
-
 	private final int [] imageResId = {
 			R.drawable.ic_action_person,
 			R.drawable.ic_action_talhoes
@@ -26,8 +26,10 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
 	private Context context;
 	public TabPagerAdapter(FragmentManager fm, Context context) {
 		super(fm);
-		fragments.add(new ListaClientesFragment());
 		this.context = context;
+		fragments.add(new ListaClientesFragment());
+		fragments.add(new ListaTalhaoComAplicacaoFragment());
+		
 	}
 	@Override
 	public CharSequence getPageTitle(int position) {
@@ -44,15 +46,20 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
 	public Fragment getItem(int position) {
 		switch (position) {
 		case 1:
-			return ListaClientesFragment.newInstance();
+			return fragments.get(position);
 		case 2:
-			return ListaTalhaoComAplicacaoFragment.newInstance();
+			return fragments.get(position);
 		default:
-			return ListaClientesFragment.newInstance();
+			return fragments.get(position);
 		}
 	}
 	@Override
 	public int getCount() {
 		return 2;
+	}
+
+	@Override
+	public void setPrimaryItem(ViewGroup container, int position, Object object) {
+		super.setPrimaryItem(container, 1, object);
 	}
 }

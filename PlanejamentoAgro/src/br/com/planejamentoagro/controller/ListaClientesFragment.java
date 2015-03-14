@@ -2,10 +2,10 @@ package br.com.planejamentoagro.controller;
 import java.io.File;
 import java.util.List;
 
-import br.com.planejamentoagro.GeraInformacoesEntidades;
 import br.com.planejamentoagro.R;
 import br.com.planejamentoagro.adpter.AdapterClienteListView;
 import br.com.planejamentoagro.helper.DiretoriosHelper;
+import br.com.planejamentoagro.helper.GeraInformacoesEntidades;
 import br.com.planejamentoagro.model.Cliente;
 import br.com.planejamentoagro.model.dao.ClienteDAO;
 import android.app.AlertDialog;
@@ -63,27 +63,6 @@ public class ListaClientesFragment extends Fragment{
 		textViewCadastrarCliente = (TextView) rootView.findViewById(R.id.tvAddCliente);
 		imageViewCadastrarCliente = (ImageView) rootView.findViewById(R.id.imAddCliente);
 		registerForContextMenu(listViewClientes);
-		
-//		lvListaClientes.setOnScrollListener(new OnScrollListener() {
-//			int mLastFirstVisibleItem = 0;
-//			@Override
-//			public void onScrollStateChanged(AbsListView view, int scrollState) {}			
-//			@Override
-//			public void onScroll(AbsListView view, int firstVisibleItem,
-//					int visibleItemCount, int totalItemCount) {
-//				if(view.getId() == lvListaClientes.getId()){
-//					final int currentFirstVisibleItem = lvListaClientes.getFirstVisiblePosition();
-//					if(currentFirstVisibleItem > mLastFirstVisibleItem)
-//					{
-//						getActivity().getActionBar().hide();
-//					}else if(currentFirstVisibleItem < mLastFirstVisibleItem)
-//					{
-//						getActivity().getActionBar().show();
-//					}
-//					mLastFirstVisibleItem = currentFirstVisibleItem;
-//				}				
-//			}
-//		});
 		toqueCurtoItemLista(listViewClientes);
 		toqueLongoItemLista(listViewClientes);
 		return rootView;
@@ -233,6 +212,7 @@ public class ListaClientesFragment extends Fragment{
 				else{
 					adaptadorClientesListView.clear();
 					adaptadorClientesListView.addAll(result);
+					listViewClientes.setAdapter(adaptadorClientesListView);
 				}
 			}else{
 				imageViewCadastrarCliente.setVisibility(View.VISIBLE);

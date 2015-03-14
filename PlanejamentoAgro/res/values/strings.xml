@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="cor">#8B6914</string>
 
     <string name="app_name">PAgro</string>
     <string name="adicionar_cliente">Clique no ícone abaixo para adicionar novo cliente.</string>

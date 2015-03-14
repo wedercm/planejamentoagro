@@ -11,7 +11,7 @@ public class Talhao implements Serializable, EntidadePersistivel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String nome;
+	private String nome, nomeCliente;
 	private int id;
 	private String produtoAplicado;
 	private Calendar dataPlantio;	
@@ -22,7 +22,7 @@ public class Talhao implements Serializable, EntidadePersistivel{
 	private int proximaAplicacao;
 	private Date dataProximaAplicacao;
 	public Talhao() {
-		this.nome = "";
+		this.nome = this.nomeCliente = "";
 		this.produtoAplicado = "";
 		this.dataPlantio = null;
 		this.diasIniciaAplicacao = 0;
@@ -64,7 +64,12 @@ public class Talhao implements Serializable, EntidadePersistivel{
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
+	public String getNomeCliente() {
+		return this.nomeCliente;
+	}
+	public void setNomeCliente(String nome) {
+		this.nomeCliente = nome;
+	}
 	public String getProdutoAplicado() {
 		return produtoAplicado;
 	}

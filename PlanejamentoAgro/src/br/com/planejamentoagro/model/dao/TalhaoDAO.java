@@ -13,6 +13,7 @@ public class TalhaoDAO extends ModeloDAO<Talhao>{
 	public static final String COLUNA_ID = "_id";
 	public static final String COLUNA_ID_CLIENTE = "idCLiente";
 	public static final String COLUNA_NOME = "nomeTalhao";
+	public static final String COLUNA_NOME_CLIENTE = "nomeCliente";
 	public static final String COLUNA_PRODUTO_APLICADO = "produtoAplicado";
 	public static final String COLUNA_DATA_PLANTIO = "dataPlantio";
 	public static final String COLUNA_DIA_INICIA_APLICACAO = "diasIniciaAplicacao";
@@ -33,7 +34,8 @@ public class TalhaoDAO extends ModeloDAO<Talhao>{
 	public static final String SQL_CRIA_TABELA_TALHAO = "CREATE TABLE "+ NOME_TABELA + "("
 			+ COLUNA_ID +" INTEGER PRIMARY KEY autoincrement, "
 			+ COLUNA_ID_CLIENTE +" INTEGER NOT NULL,"
-			+ COLUNA_NOME +" NOT NULL, "+COLUNA_PRODUTO_APLICADO+" TEXT, "+COLUNA_DATA_PLANTIO+" TEXT NOT NULL,"
+			+ COLUNA_NOME +" TEXT NOT NULL, "+COLUNA_PRODUTO_APLICADO+" TEXT, "+COLUNA_DATA_PLANTIO+" TEXT NOT NULL,"
+			+ COLUNA_NOME_CLIENTE +" TEXT NOT NULL,"			
 			+ COLUNA_DIA_INICIA_APLICACAO+" INTEGER,"
 			+ COLUNA_DATA_1 +" TEXT NOT NULL,"
 			+ COLUNA_DATA_2 +" TEXT NOT NULL,"
@@ -67,6 +69,7 @@ public class TalhaoDAO extends ModeloDAO<Talhao>{
 	public ContentValues geraContentValeusEntidade(Talhao talhao) {
 		ContentValues values = new ContentValues();
 		values.put(COLUNA_NOME, talhao.getNome());
+		values.put(COLUNA_NOME_CLIENTE, talhao.getNomeCliente());
 		values.put(COLUNA_ID_CLIENTE, talhao.getIdCliente());
 		String dataPlantio = talhao.getDataPlantio().get(Calendar.DAY_OF_MONTH)+"/"+talhao.getDataPlantio().get(Calendar.MONTH)+"/"+talhao.getDataPlantio().get(Calendar.YEAR);
 		values.put(COLUNA_DATA_PLANTIO, dataPlantio);
@@ -92,6 +95,7 @@ public class TalhaoDAO extends ModeloDAO<Talhao>{
 		talhao.setId(cursor.getInt(cursor.getColumnIndex(COLUNA_ID)));
 		talhao.setIdCliente(cursor.getInt(cursor.getColumnIndex(COLUNA_ID_CLIENTE)));
 		talhao.setNome(cursor.getString(cursor.getColumnIndex(COLUNA_NOME)));
+		talhao.setNomeCliente(cursor.getString(cursor.getColumnIndex(COLUNA_NOME_CLIENTE)));
 		talhao.setProdutoAplicado(cursor.getString(cursor.getColumnIndex(COLUNA_PRODUTO_APLICADO)));
 		Calendar c = FormatacaoDeDatas.string2calendar(cursor.getString(cursor.getColumnIndex(COLUNA_DATA_PLANTIO)));
 		talhao.setDataPlantio(c);

@@ -1,10 +1,13 @@
 package br.com.planejamentoagro.controller;
 
 import java.util.Calendar;
+
 import br.com.planejamentoagro.R;
 import br.com.planejamentoagro.adpter.TabPagerAdapter;
+import br.com.planejamentoagro.background.BackgroundReceiverHelper;
 import br.com.planejamentoagro.view.SlidingTabLayout;
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -15,26 +18,30 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 
 public class MainActivity extends FragmentActivity{
 	
 	private SlidingTabLayout mSlidingTabLayout;
 	private ViewPager mViewPager;
+	private TabPagerAdapter mPagetAdapter;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-		
+		geraAlarme(this);
 		mViewPager = (ViewPager) findViewById(R.id.view_pager);
-		mViewPager.setAdapter(new TabPagerAdapter(getSupportFragmentManager(),getApplicationContext()));			
+		mPagetAdapter = new TabPagerAdapter(getSupportFragmentManager(),getApplicationContext());
+		mViewPager.setAdapter(mPagetAdapter);			
 		mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
 		mSlidingTabLayout.setCustomTabView(R.layout.custom_tab, 0);
 		mSlidingTabLayout.setBackgroundResource(R.drawable.shape_tabs);;
-		mSlidingTabLayout.setSelectedIndicatorColors(Color.GREEN);
+		mSlidingTabLayout.setSelectedIndicatorColors(Color.RED);
 		mSlidingTabLayout.setDistributeEvenly(true);
 		mSlidingTabLayout.setViewPager(mViewPager);
-		
+		String ns = Context.NOTIFICATION_SERVICE;
+        NotificationManager nMgr = (NotificationManager) getApplicationContext().getSystemService(ns);
+        nMgr.cancel(BackgroundReceiverHelper.ID_NOFICICACAO);
 	}
 	public void casdastrarCliente(View v)
 	{

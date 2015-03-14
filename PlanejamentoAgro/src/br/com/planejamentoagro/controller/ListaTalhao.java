@@ -46,7 +46,6 @@ public class ListaTalhao extends Activity {
 		this.idCliente = getIntent().getIntExtra("ID_CLIENTE",-1);
 		this.nomeCliente = getIntent().getStringExtra("NOME_CLIENTE");
 		this.setTitle("Talhãos do "+ nomeCliente);
-
 		ClickLongo(lvListaTalhao);
 		ClickCurto(lvListaTalhao);
 	}
@@ -90,9 +89,7 @@ public class ListaTalhao extends Activity {
 		}
 		if (id == R.id.idCadastraTalhao)
 		{
-			Intent i = new Intent(ListaTalhao.this,CadastraTalhao.class);
-			i.putExtra("ID_CLIENTE", this.idCliente);
-			startActivityForResult(i, this.idCliente);
+			iniciarActivityCadastraTalhao();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -194,8 +191,13 @@ public class ListaTalhao extends Activity {
 	}
 	public void adicionarTalhao(View v)
 	{
+		iniciarActivityCadastraTalhao();
+	}
+	private void iniciarActivityCadastraTalhao()
+	{
 		Intent i = new Intent(ListaTalhao.this,CadastraTalhao.class);
 		i.putExtra("ID_CLIENTE", this.idCliente);
+		i.putExtra("NOME_CLIENTE", this.nomeCliente);
 		startActivityForResult(i, this.idCliente);
 	}
 

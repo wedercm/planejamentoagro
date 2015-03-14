@@ -2,8 +2,6 @@ package br.com.planejamentoagro.adpter;
 
 import java.util.Collection;
 import java.util.List;
-
-import br.com.planejamentoagro.model.Cliente;
 import br.com.planejamentoagro.model.Talhao;
 import br.com.planejamentoagro.R;
 import android.content.Context;

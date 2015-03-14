@@ -1,6 +1,7 @@
 package br.com.planejamentoagro.controller;
 
 import java.util.Calendar;
+
 import br.com.planejamentoagro.R;
 import br.com.planejamentoagro.helper.FormularioTalhaoHelper;
 import br.com.planejamentoagro.model.Talhao;
@@ -8,6 +9,8 @@ import br.com.planejamentoagro.model.dao.TalhaoDAO;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.GetChars;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,10 +19,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class CadastraTalhao extends Activity {
+	private static final String LOG_TAG = CadastraTalhao.class.getSimpleName();
 	private FormularioTalhaoHelper talhaoHelper;
 	private Talhao talhao = new Talhao();
 	private EditText dataPlantio;
 	private int idCliente; 
+	private String nomeCliente;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,8 @@ public class CadastraTalhao extends Activity {
 		talhaoHelper = new FormularioTalhaoHelper(this);
 		dataPlantio = (EditText) findViewById(R.id.etDataPlantio);
 		this.idCliente = getIntent().getIntExtra("ID_CLIENTE",-1);
+		this.nomeCliente = getIntent().getStringExtra("NOME_CLIENTE");
+		Log.i(LOG_TAG,nomeCliente);
 	}	
 
 	public void salvar()
@@ -35,13 +42,20 @@ public class CadastraTalhao extends Activity {
 		
 		talhao = talhaoHelper.getTalhao();
 		talhao.setIdCliente(this.idCliente);
+		talhao.setNomeCliente(this.nomeCliente);
 		if ((talhao.getDataPlantio() != null) && (!talhao.getNome().equals("")))
 		{
 			if (talhao.getDiasIniciaAplicacao() != -1)			{
-				
-				TalhaoDAO talhaoDAO = new TalhaoDAO(CadastraTalhao.this);				 
-				talhaoDAO.salvar(talhao);
-				talhaoDAO.fecharConexao();
+				TalhaoDAO talhaoDAO = null;
+				try{
+					talhaoDAO = new TalhaoDAO(CadastraTalhao.this);				
+					talhaoDAO.salvar(talhao);
+				}catch(Exception e){
+					
+				}finally{
+					if(talhaoDAO != null)
+						talhaoDAO.fecharConexao();
+				}				
 				this.finish();
 				Toast.makeText(CadastraTalhao.this, "Talhão cadastrado!", Toast.LENGTH_SHORT).show();
 			}else Toast.makeText(CadastraTalhao.this, "Dias para início da aplicação é obrigatório.", Toast.LENGTH_SHORT).show();

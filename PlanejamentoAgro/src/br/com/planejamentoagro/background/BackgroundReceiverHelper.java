@@ -2,6 +2,7 @@ package br.com.planejamentoagro.background;
 import java.util.Calendar;
 
 import br.com.planejamentoagro.R;
+import br.com.planejamentoagro.controller.ListaTalhao;
 import br.com.planejamentoagro.controller.MainActivity;
 import br.com.planejamentoagro.model.dao.TalhaoDAO;
 import android.app.Notification;
